@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import shopeeLogo from '../assets/shopee_logo_no_bkg.png';
+import flightPreview from '../assets/flight_preview.png';
 import { useLanguage } from '../i18n/LanguageContext';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
@@ -111,7 +112,7 @@ export default function SignIn() {
           align-items: center;
           justify-content: center;
           padding: 20px;
-          background-image: url('../src/assets/flight_preview.png');
+          background-image: url(${flightPreview});
           background-size: cover;
           background-position: center;
         }

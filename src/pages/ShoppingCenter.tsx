@@ -8,6 +8,9 @@ import HomeIcon from '@mui/icons-material/Home';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import SideNav from '../components/SideNav';
+import amazonLogo from '../assets/amazon_logo.png';
+import ebayLogo from '../assets/ebay_logo.png';
+import aliexpressLogo from '../assets/aliexpress_logo.png';
 import 'swiper/css';
 import 'swiper/css/pagination';
 
@@ -17,9 +20,9 @@ export default function ShoppingCenter() {
     const [isSideNavOpen, setIsSideNavOpen] = useState(false);
 
     const shops = [
-        { name: 'Amazon', logo: '/src/assets/amazon_logo.png', rating: 5 },
-        { name: 'eBay', logo: '/src/assets/ebay_logo.png', rating: 4 },
-        { name: 'AliExpress', logo: '/src/assets/aliexpress_logo.png', rating: 4 }
+        { name: 'Amazon', logo: amazonLogo, rating: 5 },
+        { name: 'eBay', logo: ebayLogo, rating: 4 },
+        { name: 'AliExpress', logo: aliexpressLogo, rating: 4 }
     ];
 
     useEffect(() => {

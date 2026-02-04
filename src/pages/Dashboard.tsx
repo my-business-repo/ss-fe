@@ -5,6 +5,8 @@ import ShoppingRankings from '../components/ShoppingRankings';
 import SideNav from '../components/SideNav';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import LightModeIcon from '@mui/icons-material/LightMode';
+import shopeeLogo from '../assets/shopee_logo_no_bkg.png';
+import shopeeCartIcon from '../assets/shopee_cart_icon.png';
 
 export default function Dashboard() {
   const navigate = useNavigate();
@@ -54,12 +56,12 @@ export default function Dashboard() {
           </button>
 
           <div className="dashboard-logo">
-            <img src="/src/assets/shopee_logo_no_bkg.png" alt="Shopee" className="logo-icon-img" />
+            <img src={shopeeLogo} alt="Shopee" className="logo-icon-img" />
           </div>
 
           <button className="user-avatar-btn" aria-label="Shopping cart" onClick={() => navigate('/profile')}>
             <div className="user-avatar">
-              <img src="/src/assets/shopee_cart_icon.png" alt="Cart" className="cart-icon-img" />
+              <img src={shopeeCartIcon} alt="Cart" className="cart-icon-img" />
             </div>
           </button>
         </div>

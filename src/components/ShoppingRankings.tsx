@@ -1,10 +1,17 @@
+import amazonLogo from '../assets/amazon_logo.png';
+import ebayLogo from '../assets/ebay_logo.png';
+import aliexpressLogo from '../assets/aliexpress_logo.png';
+import walmartLogo from '../assets/walmart_logo.png';
+import etsyLogo from '../assets/etsy_logo.png';
+import alibabaLogo from '../assets/alibaba_logo.png';
+
 const shoppingSites = [
-  { rank: 1, name: 'Amazon', logo: '/src/assets/amazon_logo.png', country: 'USA' },
-  { rank: 2, name: 'eBay', logo: '/src/assets/ebay_logo.png', country: 'USA' },
-  { rank: 3, name: 'AliExpress', logo: '/src/assets/aliexpress_logo.png', country: 'China' },
-  { rank: 4, name: 'Walmart', logo: '/src/assets/walmart_logo.png', country: 'USA' },
-  { rank: 5, name: 'Etsy', logo: '/src/assets/etsy_logo.png', country: 'USA' },
-  { rank: 6, name: 'Alibaba', logo: '/src/assets/alibaba_logo.png', country: 'China' },
+  { rank: 1, name: 'Amazon', logo: amazonLogo, country: 'USA' },
+  { rank: 2, name: 'eBay', logo: ebayLogo, country: 'USA' },
+  { rank: 3, name: 'AliExpress', logo: aliexpressLogo, country: 'China' },
+  { rank: 4, name: 'Walmart', logo: walmartLogo, country: 'USA' },
+  { rank: 5, name: 'Etsy', logo: etsyLogo, country: 'USA' },
+  { rank: 6, name: 'Alibaba', logo: alibabaLogo, country: 'China' },
   { rank: 7, name: 'Rakuten', logo: '🛍️', country: 'Japan' },
   { rank: 8, name: 'Mercado Libre', logo: '💰', country: 'Argentina' },
   { rank: 9, name: 'Shopify', logo: '🏪', country: 'Canada' },

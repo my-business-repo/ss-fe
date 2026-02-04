@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import shopeeLogo from '../assets/shopee_logo_no_bkg.png';
+import flightPreview from '../assets/flight_preview.png';
 import { useLanguage } from '../i18n/LanguageContext';
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
@@ -182,7 +183,7 @@ export default function SignUp() {
           align-items: center;
           justify-content: center;
           padding: 20px;
-          background-image: url('../src/assets/flight_preview.png'); /* Or whatever the bg is */
+          background-image: url(${flightPreview});
           background-size: cover;
           background-position: center;
         }

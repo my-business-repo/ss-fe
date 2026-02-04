@@ -1,66 +1,67 @@
 import { useNavigate } from 'react-router-dom';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import shopeeBanner from '../assets/shopee_shopping_banner.png';
 
 export default function Events() {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
-    return (
-        <div className="events-page">
-            <header className="events-header">
-                <button className="back-btn" onClick={() => navigate('/dashboard')}>
-                    <ArrowBackIcon />
-                </button>
-                <h1 className="events-title">Events</h1>
-            </header>
+  return (
+    <div className="events-page">
+      <header className="events-header">
+        <button className="back-btn" onClick={() => navigate('/dashboard')}>
+          <ArrowBackIcon />
+        </button>
+        <h1 className="events-title">Events</h1>
+      </header>
 
-            <main className="events-content">
-                <div className="article-container">
-                    <div className="article-image">
-                        <img
-                            src="/src/assets/shopee_shopping_banner.png"
-                            alt="Shopee Shopping"
-                            className="banner-image"
-                        />
-                    </div>
+      <main className="events-content">
+        <div className="article-container">
+          <div className="article-image">
+            <img
+              src={shopeeBanner}
+              alt="Shopee Shopping"
+              className="banner-image"
+            />
+          </div>
 
-                    <div className="article-body">
-                        <h2 className="article-title">How Do I Invest Here</h2>
-                        <p className="article-date">02-11-2025</p>
+          <div className="article-body">
+            <h2 className="article-title">How Do I Invest Here</h2>
+            <p className="article-date">02-11-2025</p>
 
-                        <div className="article-text">
-                            <p>
-                                Shopee is one of the most popular online shopping platforms today, and it is a great business opportunity that can be profitable if you plan and invest properly. Investing in Shopee has the advantage of starting with a small capital and gradually expanding it into your own business.
-                            </p>
+            <div className="article-text">
+              <p>
+                Shopee is one of the most popular online shopping platforms today, and it is a great business opportunity that can be profitable if you plan and invest properly. Investing in Shopee has the advantage of starting with a small capital and gradually expanding it into your own business.
+              </p>
 
-                            <p>
-                                First, those who want to invest in Shopee need to open a Shopee Account and register as a Seller. When opening an account, you must fill in your personal information correctly, and you can upload products, manage orders, and monitor sales profits through the Seller Center. Reading and understanding the rules carefully at the beginning can reduce difficulties later.
-                            </p>
+              <p>
+                First, those who want to invest in Shopee need to open a Shopee Account and register as a Seller. When opening an account, you must fill in your personal information correctly, and you can upload products, manage orders, and monitor sales profits through the Seller Center. Reading and understanding the rules carefully at the beginning can reduce difficulties later.
+              </p>
 
-                            <p>
-                                Second, product selection is the key to investment success. Choose products that are popular and in high market demand. For example, clothing, phone accessories, cosmetics, and daily necessities are products that are fast-moving and easy to sell. In addition, it is calculated in advance to ensure that there is enough profit between the purchase price and the selling price of the product.
-                            </p>
+              <p>
+                Second, product selection is the key to investment success. Choose products that are popular and in high market demand. For example, clothing, phone accessories, cosmetics, and daily necessities are products that are fast-moving and easy to sell. In addition, it is calculated in advance to ensure that there is enough profit between the purchase price and the selling price of the product.
+              </p>
 
-                            <p>
-                                Third, capital must be managed systematically. The money spent on purchasing products, Packaging and shipping costs, Shopee Ads and Promotion expenses are pre-calculated. It is best to test the sales situation without using all the capital at first and then gradually expand. This method can reduce risk.
-                            </p>
+              <p>
+                Third, capital must be managed systematically. The money spent on purchasing products, Packaging and shipping costs, Shopee Ads and Promotion expenses are pre-calculated. It is best to test the sales situation without using all the capital at first and then gradually expand. This method can reduce risk.
+              </p>
 
-                            <p>
-                                Fourth, make effective use of Shopee's promotion systems. Using Vouchers, Discounts, Free Shipping Program and Shopee Live can increase product visibility and increase the number of buyers. In addition, good product photos, clear descriptions and good reviews can increase buyer confidence.
-                            </p>
+              <p>
+                Fourth, make effective use of Shopee's promotion systems. Using Vouchers, Discounts, Free Shipping Program and Shopee Live can increase product visibility and increase the number of buyers. In addition, good product photos, clear descriptions and good reviews can increase buyer confidence.
+              </p>
 
-                            <p>
-                                Finally, customer service and building trust are the most important factors for long-term profit. Shipping orders on time, answering customer questions quickly and handling returns fairly will help to raise the store's ranking.
-                            </p>
+              <p>
+                Finally, customer service and building trust are the most important factors for long-term profit. Shipping orders on time, answering customer questions quickly and handling returns fairly will help to raise the store's ranking.
+              </p>
 
-                            <p>
-                                In short, the key to successful investment in Shopee is to choose the right products, manage your capital, use promotion methods and focus on building customer trust. If done properly, Shopee can become a profitable business channel in the long run.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </main>
+              <p>
+                In short, the key to successful investment in Shopee is to choose the right products, manage your capital, use promotion methods and focus on building customer trust. If done properly, Shopee can become a profitable business channel in the long run.
+              </p>
+            </div>
+          </div>
+        </div>
+      </main>
 
-            <style>{`
+      <style>{`
         .events-page {
           min-height: 100vh;
           background: var(--color-bg-primary);
@@ -191,6 +192,6 @@ export default function Events() {
           }
         }
       `}</style>
-        </div>
-    );
+    </div>
+  );
 }

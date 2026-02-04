@@ -1,48 +1,50 @@
+import flightPreview from '../assets/flight_preview.png';
+
 export default function FlightBooking() {
-    return (
-        <div className="flight-booking">
-            <div className="flight-header">
-                <h3 className="flight-route">Sing44 + VIP1</h3>
+  return (
+    <div className="flight-booking">
+      <div className="flight-header">
+        <h3 className="flight-route">Sing44 + VIP1</h3>
+      </div>
+
+      <div className="flight-preview">
+        <img
+          src={flightPreview}
+          alt="Flight preview"
+          className="flight-image"
+        />
+      </div>
+
+      <div className="flight-details card-glass">
+        <div className="flight-pricing">
+          <div className="pricing-item">
+            <div className="pricing-icon">💳</div>
+            <div className="pricing-info">
+              <span className="pricing-label">Credit</span>
+              <span className="pricing-amount">$803.96</span>
             </div>
+          </div>
 
-            <div className="flight-preview">
-                <img
-                    src="/src/assets/flight_preview.png"
-                    alt="Flight preview"
-                    className="flight-image"
-                />
+          <div className="pricing-item">
+            <div className="pricing-icon">💵</div>
+            <div className="pricing-info">
+              <span className="pricing-label">Debit</span>
+              <span className="pricing-amount">$0.00</span>
             </div>
+          </div>
+        </div>
 
-            <div className="flight-details card-glass">
-                <div className="flight-pricing">
-                    <div className="pricing-item">
-                        <div className="pricing-icon">💳</div>
-                        <div className="pricing-info">
-                            <span className="pricing-label">Credit</span>
-                            <span className="pricing-amount">$803.96</span>
-                        </div>
-                    </div>
+        <div className="payment-methods">
+          <div className="payment-badge">MASTER CARD</div>
+          <div className="payment-badge">Paypal</div>
+        </div>
 
-                    <div className="pricing-item">
-                        <div className="pricing-icon">💵</div>
-                        <div className="pricing-info">
-                            <span className="pricing-label">Debit</span>
-                            <span className="pricing-amount">$0.00</span>
-                        </div>
-                    </div>
-                </div>
+        <button className="btn btn-primary btn-block">
+          Starting
+        </button>
+      </div>
 
-                <div className="payment-methods">
-                    <div className="payment-badge">MASTER CARD</div>
-                    <div className="payment-badge">Paypal</div>
-                </div>
-
-                <button className="btn btn-primary btn-block">
-                    Starting
-                </button>
-            </div>
-
-            <style>{`
+      <style>{`
         .flight-booking {
           max-width: 400px;
           margin: 0 auto;
@@ -141,6 +143,6 @@ export default function FlightBooking() {
           }
         }
       `}</style>
-        </div>
-    );
+    </div>
+  );
 }

@@ -1,58 +1,59 @@
 import { useNavigate } from 'react-router-dom';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import aboutUsBanner from '../assets/about_us_banner.jpg';
 
 export default function AboutUs() {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
-    return (
-        <div className="about-page">
-            <header className="about-header">
-                <button className="back-btn" onClick={() => navigate('/dashboard')}>
-                    <ArrowBackIcon />
-                </button>
-                <h1 className="about-title">About Us</h1>
-            </header>
+  return (
+    <div className="about-page">
+      <header className="about-header">
+        <button className="back-btn" onClick={() => navigate('/dashboard')}>
+          <ArrowBackIcon />
+        </button>
+        <h1 className="about-title">About Us</h1>
+      </header>
 
-            <main className="about-content">
-                <div className="article-container">
-                    <div className="article-image">
-                        <img
-                            src="/src/assets/about_us_banner.jpg"
-                            alt="Shopee Company"
-                            className="banner-image"
-                        />
-                    </div>
+      <main className="about-content">
+        <div className="article-container">
+          <div className="article-image">
+            <img
+              src={aboutUsBanner}
+              alt="Shopee Company"
+              className="banner-image"
+            />
+          </div>
 
 
-                    <div className="article-body">
-                        <h2 className="article-title">Company Qualification</h2>
+          <div className="article-body">
+            <h2 className="article-title">Company Qualification</h2>
 
-                        <div className="article-text">
-                            <p>
-                                Shopee is a successful online shopping platform company in the digital economy, and has a complete set of international company qualifications. Shopee is owned and operated by Sea Group (Sea Limited), a global technology-based business development company.
-                            </p>
+            <div className="article-text">
+              <p>
+                Shopee is a successful online shopping platform company in the digital economy, and has a complete set of international company qualifications. Shopee is owned and operated by Sea Group (Sea Limited), a global technology-based business development company.
+              </p>
 
-                            <p>
-                                One of Shopee's key company qualifications is that it operates in accordance with the regulations of each country as a legally registered company. Shopee has set its own Terms & Conditions, Privacy Policy and Seller Policy, and has a systematic governance structure that maintains fairness for all companies that cooperate with buyers and sellers.
-                            </p>
+              <p>
+                One of Shopee's key company qualifications is that it operates in accordance with the regulations of each country as a legally registered company. Shopee has set its own Terms & Conditions, Privacy Policy and Seller Policy, and has a systematic governance structure that maintains fairness for all companies that cooperate with buyers and sellers.
+              </p>
 
-                            <p>
-                                Technically, Shopee uses a high-security online platform infrastructure, and uses advanced Data Protection and Cyber Security systems to protect user information. In addition, Shopee Guarantee System and Secure Payment System create a reliable trading environment for buyers and sellers.
-                            </p>
+              <p>
+                Technically, Shopee uses a high-security online platform infrastructure, and uses advanced Data Protection and Cyber Security systems to protect user information. In addition, Shopee Guarantee System and Secure Payment System create a reliable trading environment for buyers and sellers.
+              </p>
 
-                            <p>
-                                Shopee's company qualifications also include business cooperation experience and brand management capabilities. Shopee has partnered with international brands and local SMEs to build systems such as Shopee Mall, providing a qualified system for brands to sell legally with a guarantee of authenticity.
-                            </p>
+              <p>
+                Shopee's company qualifications also include business cooperation experience and brand management capabilities. Shopee has partnered with international brands and local SMEs to build systems such as Shopee Mall, providing a qualified system for brands to sell legally with a guarantee of authenticity.
+              </p>
 
-                            <p>
-                                Shopee is also a company with high standards in customer service and business support systems. It supports sellers' business development through Seller Education Programs, Seller Centre Tools, and Customer Support Systems. These factors prove Shopee as a sustainable business platform.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </main>
+              <p>
+                Shopee is also a company with high standards in customer service and business support systems. It supports sellers' business development through Seller Education Programs, Seller Centre Tools, and Customer Support Systems. These factors prove Shopee as a sustainable business platform.
+              </p>
+            </div>
+          </div>
+        </div>
+      </main>
 
-            <style>{`
+      <style>{`
         .about-page {
           min-height: 100vh;
           background: var(--color-bg-primary);
@@ -177,6 +178,6 @@ export default function AboutUs() {
           }
         }
       `}</style>
-        </div>
-    );
+    </div>
+  );
 }

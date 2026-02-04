@@ -3,15 +3,19 @@ import { Pagination, Autoplay } from 'swiper/modules';
 import { useNavigate } from 'react-router-dom';
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
+import amazonLogo from '../assets/amazon_logo.png';
+import ebayLogo from '../assets/ebay_logo.png';
+import aliexpressLogo from '../assets/aliexpress_logo.png';
+import flightPreview from '../assets/flight_preview.png';
 import 'swiper/css';
 import 'swiper/css/pagination';
 
 export default function ProductCard() {
   const navigate = useNavigate();
   const shops = [
-    { name: 'Amazon', logo: '/src/assets/amazon_logo.png', rating: 5 },
-    { name: 'eBay', logo: '/src/assets/ebay_logo.png', rating: 4 },
-    { name: 'AliExpress', logo: '/src/assets/aliexpress_logo.png', rating: 4 }
+    { name: 'Amazon', logo: amazonLogo, rating: 5 },
+    { name: 'eBay', logo: ebayLogo, rating: 4 },
+    { name: 'AliExpress', logo: aliexpressLogo, rating: 4 }
   ];
 
   return (
@@ -22,7 +26,7 @@ export default function ProductCard() {
 
       <div className="product-preview">
         <img
-          src="/src/assets/flight_preview.png"
+          src={flightPreview}
           alt="Product preview"
           className="product-image"
         />

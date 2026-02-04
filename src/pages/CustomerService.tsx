@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import HeadsetMicIcon from '@mui/icons-material/HeadsetMic';
 import { useLanguage } from '../i18n/LanguageContext';
+import customerServiceImage from '../assets/customer_service_rep.png';
 
 export default function CustomerService() {
   const navigate = useNavigate();
@@ -24,7 +25,7 @@ export default function CustomerService() {
       <main className="service-content">
         <div className="service-image-container">
           <img
-            src="/src/assets/customer_service_rep.png"
+            src={customerServiceImage}
             alt="Customer Service Representative"
             className="service-image"
           />
