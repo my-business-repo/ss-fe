@@ -5,22 +5,17 @@ import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import StarIcon from '@mui/icons-material/Star';
 import { useLanguage } from '../i18n/LanguageContext';
+import { useAuth } from '../context/AuthContext';
 
 export default function Profile() {
   const navigate = useNavigate();
   const { t } = useLanguage();
+  const { user } = useAuth();
   const [copySuccess, setCopySuccess] = useState(false);
 
-  // User data (would normally come from context/API)
-  const userData = {
-    username: 'sing44',
-    vipLevel: 'VIP1',
-    referralCode: 'C8RVJN',
-    creditScore: 100
-  };
-
   const handleCopyReferral = () => {
-    navigator.clipboard.writeText(userData.referralCode);
+    const referralCode = 'INVITE2026'; // Default referral code - can be extended when backend provides it
+    navigator.clipboard.writeText(referralCode);
     setCopySuccess(true);
     setTimeout(() => setCopySuccess(false), 2000);
   };
@@ -48,11 +43,11 @@ export default function Profile() {
 
           <div className="profile-info">
             <h2 className="username">
-              {userData.username} <StarIcon className="vip-star" /> {userData.vipLevel}
+              {user?.name || 'User'} <StarIcon className="vip-star" /> {user?.level?.name || 'VIP1'}
             </h2>
             <div className="referral-section">
               <span className="referral-label">{t('referralCode')}: </span>
-              <span className="referral-code">{userData.referralCode}</span>
+              <span className="referral-code">INVITE2026</span>
               <button
                 className="copy-btn"
                 onClick={handleCopyReferral}
@@ -67,10 +62,10 @@ export default function Profile() {
           <div className="credit-section">
             <div className="credit-header">
               <span className="credit-label">{t('creditScore')}</span>
-              <span className="credit-value">{userData.creditScore}%</span>
+              <span className="credit-value">100%</span>
             </div>
             <div className="credit-bar">
-              <div className="credit-fill" style={{ width: `${userData.creditScore}%` }}></div>
+              <div className="credit-fill" style={{ width: '100%' }}></div>
             </div>
           </div>
         </div>

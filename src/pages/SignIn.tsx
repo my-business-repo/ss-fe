@@ -5,22 +5,49 @@ import flightPreview from '../assets/flight_preview.png';
 import { useLanguage } from '../i18n/LanguageContext';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import { signinCustomer } from '../services/customerService';
+import { useAuth } from '../context/AuthContext';
 
 export default function SignIn() {
   const navigate = useNavigate();
   const { t } = useLanguage();
+  const { login } = useAuth();
   const [formData, setFormData] = useState({
-    username: '',
+    email: '',
     password: '',
     remember: false
   });
   const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Simple validation - in real app, this would authenticate with backend
-    if (formData.username && formData.password) {
-      navigate('/dashboard');
+    setError(null);
+
+    if (formData.email && formData.password) {
+      setIsLoading(true);
+      try {
+        // Call the signin API
+        const response = await signinCustomer({
+          email: formData.email,
+          password: formData.password,
+        });
+
+        console.log('Signin successful:', response);
+
+        // Use AuthContext to manage authentication state
+        login(response.token, response.customer);
+
+        // Navigate to dashboard on success
+        navigate('/dashboard');
+      } catch (err) {
+        const errorMessage = err instanceof Error ? err.message : 'An unexpected error occurred';
+        setError(errorMessage);
+        console.error('Signin error:', err);
+      } finally {
+        setIsLoading(false);
+      }
     }
   };
 
@@ -44,15 +71,22 @@ export default function SignIn() {
           </div>
 
           <form onSubmit={handleSubmit} className="auth-form">
+            {/* Error Message */}
+            {error && (
+              <div className="error-message">
+                {error}
+              </div>
+            )}
+
             <div className="form-group">
-              <label htmlFor="username" className="form-label">{t('username')}</label>
+              <label htmlFor="email" className="form-label">Email</label>
               <input
-                type="text"
-                id="username"
-                name="username"
+                type="email"
+                id="email"
+                name="email"
                 className="form-input"
-                placeholder={t('enterUsername')}
-                value={formData.username}
+                placeholder="Enter your email"
+                value={formData.email}
                 onChange={handleChange}
                 required
               />
@@ -93,8 +127,8 @@ export default function SignIn() {
               <a href="#" className="auth-link">Forgot password?</a>
             </div>
 
-            <button type="submit" className="btn btn-primary btn-block submit-btn">
-              {t('signIn')}
+            <button type="submit" className="btn btn-primary btn-block submit-btn" disabled={isLoading}>
+              {isLoading ? 'Signing in...' : t('signIn')}
             </button>
 
             <div className="auth-footer text-right">
@@ -250,6 +284,26 @@ export default function SignIn() {
         .submit-btn:hover {
             background: #2c2d45;
             box-shadow: none;
+        }
+        
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .error-message {
+            background: #fee;
+            color: #c33;
+            padding: 12px 16px;
+            border-radius: 4px;
+            font-size: 14px;
+            border: 1px solid #fcc;
+        }
+        
+        [data-theme='dark'] .error-message {
+            background: #4a1f1f;
+            color: #ff6b6b;
+            border-color: #6b2c2c;
         }
 
         .auth-footer {

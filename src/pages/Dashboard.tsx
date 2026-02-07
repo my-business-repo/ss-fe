@@ -7,9 +7,11 @@ import DarkModeIcon from '@mui/icons-material/DarkMode';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import shopeeLogo from '../assets/shopee_logo_no_bkg.png';
 import shopeeCartIcon from '../assets/shopee_cart_icon.png';
+import { useAuth } from '../context/AuthContext';
 
 export default function Dashboard() {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const [isSideNavOpen, setIsSideNavOpen] = useState(false);
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
 
@@ -69,7 +71,7 @@ export default function Dashboard() {
 
       <div className="welcome-banner">
         <p className="welcome-text">
-          Hello!welcome <span className="user-route">Sing44 ★ VIP1</span>
+          Hello!welcome <span className="user-route">{user?.name || 'Guest'} ★ {user?.level?.name || 'VIP1'}</span>
         </p>
       </div>
 

@@ -7,6 +7,7 @@ import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import { signupCustomer } from '../services/customerService';
 
 export default function SignUp() {
   const navigate = useNavigate();
@@ -23,25 +24,48 @@ export default function SignUp() {
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError(null);
 
     // Simple validation
     if (formData.password !== formData.confirmPassword) {
-      alert('Passwords do not match!');
+      setError('Passwords do not match!');
       return;
     }
 
     if (!formData.inviteCode) {
-      alert('Invite code is required');
+      setError('Invite code is required');
       return;
     }
 
     if (formData.username && formData.phone && formData.password && formData.fundPassword) {
-      // In real app, this would create account via backend
-      console.log('Registering:', formData);
-      navigate('/dashboard');
+      setIsLoading(true);
+      try {
+        // Call the signup API
+        const response = await signupCustomer({
+          name: formData.username,
+          email: formData.username, // Using username as email for now
+          password: formData.password,
+          fundPassword: formData.fundPassword,
+          phoneNumber: formData.phone,
+          referCode: formData.inviteCode,
+        });
+
+        console.log('Signup successful:', response);
+
+        // Navigate to login page on success
+        navigate('/');
+      } catch (err) {
+        const errorMessage = err instanceof Error ? err.message : 'An unexpected error occurred';
+        setError(errorMessage);
+        console.error('Signup error:', err);
+      } finally {
+        setIsLoading(false);
+      }
     }
   };
 
@@ -69,6 +93,13 @@ export default function SignUp() {
           </div>
 
           <form onSubmit={handleSubmit} className="auth-form">
+            {/* Error Message */}
+            {error && (
+              <div className="error-message">
+                {error}
+              </div>
+            )}
+
             {/* Username */}
             <div className="form-group">
               <input
@@ -164,8 +195,8 @@ export default function SignUp() {
               />
             </div>
 
-            <button type="submit" className="btn btn-primary btn-block submit-btn">
-              {t('register')}
+            <button type="submit" className="btn btn-primary btn-block submit-btn" disabled={isLoading}>
+              {isLoading ? 'Registering...' : t('register')}
             </button>
 
             <div className="auth-footer text-right">
@@ -340,6 +371,26 @@ export default function SignUp() {
         .submit-btn:hover {
             background: #2c2d45;
             box-shadow: none;
+        }
+        
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .error-message {
+            background: #fee;
+            color: #c33;
+            padding: 12px 16px;
+            border-radius: 4px;
+            font-size: 14px;
+            border: 1px solid #fcc;
+        }
+        
+        [data-theme='dark'] .error-message {
+            background: #4a1f1f;
+            color: #ff6b6b;
+            border-color: #6b2c2c;
         }
 
         .auth-footer {

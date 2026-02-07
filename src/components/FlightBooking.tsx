@@ -1,10 +1,12 @@
+import { useAuth } from '../context/AuthContext';
 import flightPreview from '../assets/flight_preview.png';
 
 export default function FlightBooking() {
+  const { user } = useAuth();
   return (
     <div className="flight-booking">
       <div className="flight-header">
-        <h3 className="flight-route">Sing44 + VIP1</h3>
+        <h3 className="flight-route">{user?.name || 'Guest'} + {user?.level?.name || 'VIP1'}</h3>
       </div>
 
       <div className="flight-preview">

@@ -3,6 +3,7 @@ import { Pagination, Autoplay } from 'swiper/modules';
 import { useNavigate } from 'react-router-dom';
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
+import { useAuth } from '../context/AuthContext';
 import amazonLogo from '../assets/amazon_logo.png';
 import ebayLogo from '../assets/ebay_logo.png';
 import aliexpressLogo from '../assets/aliexpress_logo.png';
@@ -12,6 +13,7 @@ import 'swiper/css/pagination';
 
 export default function ProductCard() {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const shops = [
     { name: 'Amazon', logo: amazonLogo, rating: 5 },
     { name: 'eBay', logo: ebayLogo, rating: 4 },
@@ -21,7 +23,7 @@ export default function ProductCard() {
   return (
     <div className="product-card">
       <div className="product-header">
-        <h3 className="product-route">Sing44 + VIP1</h3>
+        <h3 className="product-route">{user?.name || 'Guest'} + {user?.level?.name || 'VIP1'}</h3>
       </div>
 
       <div className="product-preview">

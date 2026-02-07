@@ -8,6 +8,7 @@ import HistoryIcon from '@mui/icons-material/History';
 import PeopleIcon from '@mui/icons-material/People';
 import { Link, useNavigate } from 'react-router-dom';
 import { useLanguage } from '../i18n/LanguageContext';
+import { useAuth } from '../context/AuthContext';
 
 interface SideNavProps {
   isOpen: boolean;
@@ -17,10 +18,12 @@ interface SideNavProps {
 export default function SideNav({ isOpen, onClose }: SideNavProps) {
   const { t } = useLanguage();
   const navigate = useNavigate();
+  const { logout, user } = useAuth();
 
   const handleSignOut = () => {
-    onClose();
-    navigate('/');
+    logout(); // Clear authentication state
+    onClose(); // Close the side nav
+    navigate('/'); // Redirect to signin page
   };
   return (
     <>
@@ -38,8 +41,8 @@ export default function SideNav({ isOpen, onClose }: SideNavProps) {
           <div className="credit-card-view">
             <div className="card-icon">💳</div>
             <div className="card-info">
-              <div className="card-route">Sing44 + VIP1</div>
-              <div className="card-details">TahunCard: 05724.10</div>
+              <div className="card-route">{user?.name || 'Guest'} ★ {user?.level?.name || 'VIP1'}</div>
+              <div className="card-details">Card Balance: $0.00</div>
             </div>
             <div className="card-percentage">100%</div>
           </div>
@@ -47,7 +50,7 @@ export default function SideNav({ isOpen, onClose }: SideNavProps) {
           {/* Balance Display */}
           <div className="balance-display">
             <div className="balance-card">
-              <div className="balance-amount">$503.96</div>
+              <div className="balance-amount">$0.00</div>
               <div className="balance-label">Card Balance</div>
             </div>
             <div className="balance-card">

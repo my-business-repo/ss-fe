@@ -1,5 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { LanguageProvider } from './i18n/LanguageContext';
+import { AuthProvider } from './context/AuthContext';
+import ProtectedRoute from './components/ProtectedRoute';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
 import Dashboard from './pages/Dashboard';
@@ -23,31 +25,38 @@ import ShoppingCenter from './pages/ShoppingCenter';
 function App() {
   return (
     <LanguageProvider>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<SignIn />} />
-          <Route path="/signup" element={<SignUp />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/events" element={<Events />} />
-          <Route path="/about-us" element={<AboutUs />} />
-          <Route path="/withdraw" element={<Withdraw />} />
-          <Route path="/bank-info" element={<BankInfo />} />
-          <Route path="/withdrawal-address" element={<WithdrawalAddress />} />
-          <Route path="/withdrawal-record" element={<WithdrawalRecord />} />
-          <Route path="/recharge-record" element={<RechargeRecord />} />
-          <Route path="/customer-service" element={<CustomerService />} />
-          <Route path="/chat" element={<Chat />} />
-          <Route path="/clause" element={<Clause />} />
-          <Route path="/deposit" element={<Deposit />} />
-          <Route path="/deposit-upload" element={<DepositUpload />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/change-login-password" element={<ChangePassword />} />
-          <Route path="/change-fund-password" element={<ChangePassword />} />
-          <Route path="/language" element={<Language />} />
-          <Route path="/shopping-center" element={<ShoppingCenter />} />
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
-      </BrowserRouter>
+      <AuthProvider>
+        <BrowserRouter>
+          <Routes>
+            {/* Public routes */}
+            <Route path="/" element={<SignIn />} />
+            <Route path="/signup" element={<SignUp />} />
+
+            {/* Protected routes */}
+            <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+            <Route path="/events" element={<ProtectedRoute><Events /></ProtectedRoute>} />
+            <Route path="/about-us" element={<ProtectedRoute><AboutUs /></ProtectedRoute>} />
+            <Route path="/withdraw" element={<ProtectedRoute><Withdraw /></ProtectedRoute>} />
+            <Route path="/bank-info" element={<ProtectedRoute><BankInfo /></ProtectedRoute>} />
+            <Route path="/withdrawal-address" element={<ProtectedRoute><WithdrawalAddress /></ProtectedRoute>} />
+            <Route path="/withdrawal-record" element={<ProtectedRoute><WithdrawalRecord /></ProtectedRoute>} />
+            <Route path="/recharge-record" element={<ProtectedRoute><RechargeRecord /></ProtectedRoute>} />
+            <Route path="/customer-service" element={<ProtectedRoute><CustomerService /></ProtectedRoute>} />
+            <Route path="/chat" element={<ProtectedRoute><Chat /></ProtectedRoute>} />
+            <Route path="/clause" element={<ProtectedRoute><Clause /></ProtectedRoute>} />
+            <Route path="/deposit" element={<ProtectedRoute><Deposit /></ProtectedRoute>} />
+            <Route path="/deposit-upload" element={<ProtectedRoute><DepositUpload /></ProtectedRoute>} />
+            <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+            <Route path="/change-login-password" element={<ProtectedRoute><ChangePassword /></ProtectedRoute>} />
+            <Route path="/change-fund-password" element={<ProtectedRoute><ChangePassword /></ProtectedRoute>} />
+            <Route path="/language" element={<ProtectedRoute><Language /></ProtectedRoute>} />
+            <Route path="/shopping-center" element={<ProtectedRoute><ShoppingCenter /></ProtectedRoute>} />
+
+            {/* Fallback */}
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </BrowserRouter>
+      </AuthProvider>
     </LanguageProvider>
   );
 }

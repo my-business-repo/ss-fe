@@ -11,11 +11,13 @@ import SideNav from '../components/SideNav';
 import amazonLogo from '../assets/amazon_logo.png';
 import ebayLogo from '../assets/ebay_logo.png';
 import aliexpressLogo from '../assets/aliexpress_logo.png';
+import { useAuth } from '../context/AuthContext';
 import 'swiper/css';
 import 'swiper/css/pagination';
 
 export default function ShoppingCenter() {
     const navigate = useNavigate();
+    const { user } = useAuth();
     const [theme, setTheme] = useState<'light' | 'dark'>('light');
     const [isSideNavOpen, setIsSideNavOpen] = useState(false);
 
@@ -72,7 +74,7 @@ export default function ShoppingCenter() {
                 <div className="container">
                     <div className="user-greeting">
                         <p className="greeting-text">
-                            Hello!welcome <span className="user-name">Sing44 ★ VIP1</span>
+                            Hello!welcome <span className="user-name">{user?.name || 'Guest'} ★ {user?.level?.name || 'VIP1'}</span>
                         </p>
                     </div>
 
