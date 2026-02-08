@@ -1,4 +1,3 @@
-import React from 'react';
 import HomeIcon from '@mui/icons-material/Home';
 import GetAppIcon from '@mui/icons-material/GetApp';
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';

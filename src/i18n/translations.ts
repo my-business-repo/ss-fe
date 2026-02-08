@@ -224,6 +224,8 @@ export const translations = {
         chainName: '链名称',
         walletAddress: '钱包地址',
         walletAddressCantBeEmpty: '钱包地址不能为空',
+        withdrawalAddressAddedSub: '提款地址添加成功',
+        accountName: '账户名称',
 
         // Records
         date: '日期',
@@ -347,6 +349,8 @@ export const translations = {
         chainName: 'Nombre de la Cadena',
         walletAddress: 'Dirección de Billetera',
         walletAddressCantBeEmpty: 'La Dirección de Billetera No Puede Estar Vacía',
+        withdrawalAddressAddedSub: 'Dirección de Retiro Agregada Exitosamente',
+        accountName: 'Nombre de Cuenta',
 
         // Records
         date: 'Fecha',
@@ -387,7 +391,7 @@ export const translations = {
         // Bank Info
         nation: 'Nation', pleaseSelectNation: 'Please Select Your Nation', bankName: 'Bank Name', pleaseSelectBank: 'Please Select Your Bank Name', cardHolder: 'Card Holder', pleaseSelectCardHolder: 'Please Select Your Card Holder', cardNumber: 'Card Number', pleaseSelectCardNumber: 'Please Select Your Card Number', iban: 'IBAN', pleaseSelectIBAN: 'Please Select Your IBAN', fundPassword: 'Fund Password', enterFundPassword: 'Please Enter Your Fund Password',
         // Withdrawal Address
-        chainName: 'Chain Name', walletAddress: 'Wallet Address', walletAddressCantBeEmpty: 'Wallet Address Can\'t Be Empty',
+        chainName: 'Chain Name', walletAddress: 'Wallet Address', walletAddressCantBeEmpty: 'Wallet Address Can\'t Be Empty', withdrawalAddressAddedSub: 'Withdrawal Address Added Successfully', accountName: 'Account Name',
         // Records
         date: 'Date', status: 'Status', success: 'Success', pending: 'Pending', failed: 'Failed', noData: 'No Data', type: 'Type',
         // Authentication
@@ -410,7 +414,7 @@ export const translations = {
         // Bank Info
         nation: 'Nation', pleaseSelectNation: 'Please Select Your Nation', bankName: 'Bank Name', pleaseSelectBank: 'Please Select Your Bank Name', cardHolder: 'Card Holder', pleaseSelectCardHolder: 'Please Select Your Card Holder', cardNumber: 'Card Number', pleaseSelectCardNumber: 'Please Select Your Card Number', iban: 'IBAN', pleaseSelectIBAN: 'Please Select Your IBAN', fundPassword: 'Fund Password', enterFundPassword: 'Please Enter Your Fund Password',
         // Withdrawal Address
-        chainName: 'Chain Name', walletAddress: 'Wallet Address', walletAddressCantBeEmpty: 'Wallet Address Can\'t Be Empty',
+        chainName: 'Chain Name', walletAddress: 'Wallet Address', walletAddressCantBeEmpty: 'Wallet Address Can\'t Be Empty', withdrawalAddressAddedSub: 'Withdrawal Address Added Successfully', accountName: 'Account Name',
         // Records
         date: 'Date', status: 'Status', success: 'Success', pending: 'Pending', failed: 'Failed', noData: 'No Data', type: 'Type',
         // Authentication
@@ -433,7 +437,7 @@ export const translations = {
         // Bank Info
         nation: 'Nation', pleaseSelectNation: 'Please Select Your Nation', bankName: 'Bank Name', pleaseSelectBank: 'Please Select Your Bank Name', cardHolder: 'Card Holder', pleaseSelectCardHolder: 'Please Select Your Card Holder', cardNumber: 'Card Number', pleaseSelectCardNumber: 'Please Select Your Card Number', iban: 'IBAN', pleaseSelectIBAN: 'Please Select Your IBAN', fundPassword: 'Fund Password', enterFundPassword: 'Please Enter Your Fund Password',
         // Withdrawal Address
-        chainName: 'Chain Name', walletAddress: 'Wallet Address', walletAddressCantBeEmpty: 'Wallet Address Can\'t Be Empty',
+        chainName: 'Chain Name', walletAddress: 'Wallet Address', walletAddressCantBeEmpty: 'Wallet Address Can\'t Be Empty', withdrawalAddressAddedSub: 'Withdrawal Address Added Successfully', accountName: 'Account Name',
         // Records
         date: 'Date', status: 'Status', success: 'Success', pending: 'Pending', failed: 'Failed', noData: 'No Data', type: 'Type',
         // Authentication
@@ -456,7 +460,7 @@ export const translations = {
         // Bank Info
         nation: 'Nation', pleaseSelectNation: 'Please Select Your Nation', bankName: 'Bank Name', pleaseSelectBank: 'Please Select Your Bank Name', cardHolder: 'Card Holder', pleaseSelectCardHolder: 'Please Select Your Card Holder', cardNumber: 'Card Number', pleaseSelectCardNumber: 'Please Select Your Card Number', iban: 'IBAN', pleaseSelectIBAN: 'Please Select Your IBAN', fundPassword: 'Fund Password', enterFundPassword: 'Please Enter Your Fund Password',
         // Withdrawal Address
-        chainName: 'Chain Name', walletAddress: 'Wallet Address', walletAddressCantBeEmpty: 'Wallet Address Can\'t Be Empty',
+        chainName: 'Chain Name', walletAddress: 'Wallet Address', walletAddressCantBeEmpty: 'Wallet Address Can\'t Be Empty', withdrawalAddressAddedSub: 'Withdrawal Address Added Successfully', accountName: 'Account Name',
         // Records
         date: 'Date', status: 'Status', success: 'Success', pending: 'Pending', failed: 'Failed', noData: 'No Data', type: 'Type',
         // Authentication
@@ -479,7 +483,7 @@ export const translations = {
         // Bank Info
         nation: 'Nation', pleaseSelectNation: 'Please Select Your Nation', bankName: 'Bank Name', pleaseSelectBank: 'Please Select Your Bank Name', cardHolder: 'Card Holder', pleaseSelectCardHolder: 'Please Select Your Card Holder', cardNumber: 'Card Number', pleaseSelectCardNumber: 'Please Select Your Card Number', iban: 'IBAN', pleaseSelectIBAN: 'Please Select Your IBAN', fundPassword: 'Fund Password', enterFundPassword: 'Please Enter Your Fund Password',
         // Withdrawal Address
-        chainName: 'Chain Name', walletAddress: 'Wallet Address', walletAddressCantBeEmpty: 'Wallet Address Can\'t Be Empty',
+        chainName: 'Chain Name', walletAddress: 'Wallet Address', walletAddressCantBeEmpty: 'Wallet Address Can\'t Be Empty', withdrawalAddressAddedSub: 'Withdrawal Address Added Successfully', accountName: 'Account Name',
         // Records
         date: 'Date', status: 'Status', success: 'Success', pending: 'Pending', failed: 'Failed', noData: 'No Data', type: 'Type',
         // Authentication
@@ -502,7 +506,7 @@ export const translations = {
         // Bank Info
         nation: 'Nation', pleaseSelectNation: 'Please Select Your Nation', bankName: 'Bank Name', pleaseSelectBank: 'Please Select Your Bank Name', cardHolder: 'Card Holder', pleaseSelectCardHolder: 'Please Select Your Card Holder', cardNumber: 'Card Number', pleaseSelectCardNumber: 'Please Select Your Card Number', iban: 'IBAN', pleaseSelectIBAN: 'Please Select Your IBAN', fundPassword: 'Fund Password', enterFundPassword: 'Please Enter Your Fund Password',
         // Withdrawal Address
-        chainName: 'Chain Name', walletAddress: 'Wallet Address', walletAddressCantBeEmpty: 'Wallet Address Can\'t Be Empty',
+        chainName: 'Chain Name', walletAddress: 'Wallet Address', walletAddressCantBeEmpty: 'Wallet Address Can\'t Be Empty', withdrawalAddressAddedSub: 'Withdrawal Address Added Successfully', accountName: 'Account Name',
         // Records
         date: 'Date', status: 'Status', success: 'Success', pending: 'Pending', failed: 'Failed', noData: 'No Data', type: 'Type',
         // Authentication
@@ -525,7 +529,7 @@ export const translations = {
         // Bank Info
         nation: 'Nation', pleaseSelectNation: 'Please Select Your Nation', bankName: 'Bank Name', pleaseSelectBank: 'Please Select Your Bank Name', cardHolder: 'Card Holder', pleaseSelectCardHolder: 'Please Select Your Card Holder', cardNumber: 'Card Number', pleaseSelectCardNumber: 'Please Select Your Card Number', iban: 'IBAN', pleaseSelectIBAN: 'Please Select Your IBAN', fundPassword: 'Fund Password', enterFundPassword: 'Please Enter Your Fund Password',
         // Withdrawal Address
-        chainName: 'Chain Name', walletAddress: 'Wallet Address', walletAddressCantBeEmpty: 'Wallet Address Can\'t Be Empty',
+        chainName: 'Chain Name', walletAddress: 'Wallet Address', walletAddressCantBeEmpty: 'Wallet Address Can\'t Be Empty', withdrawalAddressAddedSub: 'Withdrawal Address Added Successfully', accountName: 'Account Name',
         // Records
         date: 'Date', status: 'Status', success: 'Success', pending: 'Pending', failed: 'Failed', noData: 'No Data', type: 'Type',
         // Authentication
@@ -548,7 +552,7 @@ export const translations = {
         // Bank Info
         nation: 'Nation', pleaseSelectNation: 'Please Select Your Nation', bankName: 'Bank Name', pleaseSelectBank: 'Please Select Your Bank Name', cardHolder: 'Card Holder', pleaseSelectCardHolder: 'Please Select Your Card Holder', cardNumber: 'Card Number', pleaseSelectCardNumber: 'Please Select Your Card Number', iban: 'IBAN', pleaseSelectIBAN: 'Please Select Your IBAN', fundPassword: 'Fund Password', enterFundPassword: 'Please Enter Your Fund Password',
         // Withdrawal Address
-        chainName: 'Chain Name', walletAddress: 'Wallet Address', walletAddressCantBeEmpty: 'Wallet Address Can\'t Be Empty',
+        chainName: 'Chain Name', walletAddress: 'Wallet Address', walletAddressCantBeEmpty: 'Wallet Address Can\'t Be Empty', withdrawalAddressAddedSub: 'Withdrawal Address Added Successfully', accountName: 'Account Name',
         // Records
         date: 'Date', status: 'Status', success: 'Success', pending: 'Pending', failed: 'Failed', noData: 'No Data', type: 'Type',
         // Authentication
@@ -571,7 +575,7 @@ export const translations = {
         // Bank Info
         nation: 'Nation', pleaseSelectNation: 'Please Select Your Nation', bankName: 'Bank Name', pleaseSelectBank: 'Please Select Your Bank Name', cardHolder: 'Card Holder', pleaseSelectCardHolder: 'Please Select Your Card Holder', cardNumber: 'Card Number', pleaseSelectCardNumber: 'Please Select Your Card Number', iban: 'IBAN', pleaseSelectIBAN: 'Please Select Your IBAN', fundPassword: 'Fund Password', enterFundPassword: 'Please Enter Your Fund Password',
         // Withdrawal Address
-        chainName: 'Chain Name', walletAddress: 'Wallet Address', walletAddressCantBeEmpty: 'Wallet Address Can\'t Be Empty',
+        chainName: 'Chain Name', walletAddress: 'Wallet Address', walletAddressCantBeEmpty: 'Wallet Address Can\'t Be Empty', withdrawalAddressAddedSub: 'Withdrawal Address Added Successfully', accountName: 'Account Name',
         // Records
         date: 'Date', status: 'Status', success: 'Success', pending: 'Pending', failed: 'Failed', noData: 'No Data', type: 'Type',
         // Authentication
@@ -594,7 +598,7 @@ export const translations = {
         // Bank Info
         nation: 'Nation', pleaseSelectNation: 'Please Select Your Nation', bankName: 'Bank Name', pleaseSelectBank: 'Please Select Your Bank Name', cardHolder: 'Card Holder', pleaseSelectCardHolder: 'Please Select Your Card Holder', cardNumber: 'Card Number', pleaseSelectCardNumber: 'Please Select Your Card Number', iban: 'IBAN', pleaseSelectIBAN: 'Please Select Your IBAN', fundPassword: 'Fund Password', enterFundPassword: 'Please Enter Your Fund Password',
         // Withdrawal Address
-        chainName: 'Chain Name', walletAddress: 'Wallet Address', walletAddressCantBeEmpty: 'Wallet Address Can\'t Be Empty',
+        chainName: 'Chain Name', walletAddress: 'Wallet Address', walletAddressCantBeEmpty: 'Wallet Address Can\'t Be Empty', withdrawalAddressAddedSub: 'Withdrawal Address Added Successfully', accountName: 'Account Name',
         // Records
         date: 'Date', status: 'Status', success: 'Success', pending: 'Pending', failed: 'Failed', noData: 'No Data', type: 'Type',
         // Authentication
@@ -617,7 +621,7 @@ export const translations = {
         // Bank Info
         nation: 'Nation', pleaseSelectNation: 'Please Select Your Nation', bankName: 'Bank Name', pleaseSelectBank: 'Please Select Your Bank Name', cardHolder: 'Card Holder', pleaseSelectCardHolder: 'Please Select Your Card Holder', cardNumber: 'Card Number', pleaseSelectCardNumber: 'Please Select Your Card Number', iban: 'IBAN', pleaseSelectIBAN: 'Please Select Your IBAN', fundPassword: 'Fund Password', enterFundPassword: 'Please Enter Your Fund Password',
         // Withdrawal Address
-        chainName: 'Chain Name', walletAddress: 'Wallet Address', walletAddressCantBeEmpty: 'Wallet Address Can\'t Be Empty',
+        chainName: 'Chain Name', walletAddress: 'Wallet Address', walletAddressCantBeEmpty: 'Wallet Address Can\'t Be Empty', withdrawalAddressAddedSub: 'Withdrawal Address Added Successfully', accountName: 'Account Name',
         // Records
         date: 'Date', status: 'Status', success: 'Success', pending: 'Pending', failed: 'Failed', noData: 'No Data', type: 'Type',
         // Authentication
@@ -640,7 +644,7 @@ export const translations = {
         // Bank Info
         nation: 'Nation', pleaseSelectNation: 'Please Select Your Nation', bankName: 'Bank Name', pleaseSelectBank: 'Please Select Your Bank Name', cardHolder: 'Card Holder', pleaseSelectCardHolder: 'Please Select Your Card Holder', cardNumber: 'Card Number', pleaseSelectCardNumber: 'Please Select Your Card Number', iban: 'IBAN', pleaseSelectIBAN: 'Please Select Your IBAN', fundPassword: 'Fund Password', enterFundPassword: 'Please Enter Your Fund Password',
         // Withdrawal Address
-        chainName: 'Chain Name', walletAddress: 'Wallet Address', walletAddressCantBeEmpty: 'Wallet Address Can\'t Be Empty',
+        chainName: 'Chain Name', walletAddress: 'Wallet Address', walletAddressCantBeEmpty: 'Wallet Address Can\'t Be Empty', withdrawalAddressAddedSub: 'Withdrawal Address Added Successfully', accountName: 'Account Name',
         // Records
         date: 'Date', status: 'Status', success: 'Success', pending: 'Pending', failed: 'Failed', noData: 'No Data', type: 'Type',
         // Authentication
