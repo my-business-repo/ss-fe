@@ -14,7 +14,23 @@ export default function Profile() {
   const [copySuccess, setCopySuccess] = useState(false);
 
   const handleCopyReferral = () => {
-    const referralCode = 'INVITE2026'; // Default referral code - can be extended when backend provides it
+    // Try to get referral code from user context first, then localStorage, then fallback
+    let referralCode = user?.referCode;
+
+    if (!referralCode) {
+      try {
+        const storedCustomer = localStorage.getItem('customer');
+        if (storedCustomer) {
+          const parsedCustomer = JSON.parse(storedCustomer);
+          referralCode = parsedCustomer.referCode;
+        }
+      } catch (e) {
+        console.error('Error reading customer from local storage', e);
+      }
+    }
+
+    referralCode = referralCode || 'INVITE2026';
+
     navigator.clipboard.writeText(referralCode);
     setCopySuccess(true);
     setTimeout(() => setCopySuccess(false), 2000);
@@ -47,7 +63,14 @@ export default function Profile() {
             </h2>
             <div className="referral-section">
               <span className="referral-label">{t('referralCode')}: </span>
-              <span className="referral-code">INVITE2026</span>
+              <span className="referral-code">
+                {user?.referCode || (() => {
+                  try {
+                    const stored = localStorage.getItem('customer');
+                    return stored ? JSON.parse(stored).referCode : null;
+                  } catch { return null; }
+                })() || 'INVITE2026'}
+              </span>
               <button
                 className="copy-btn"
                 onClick={handleCopyReferral}

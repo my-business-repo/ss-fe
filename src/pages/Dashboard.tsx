@@ -5,6 +5,7 @@ import ShoppingRankings from '../components/ShoppingRankings';
 import SideNav from '../components/SideNav';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import LightModeIcon from '@mui/icons-material/LightMode';
+import HeadsetMicIcon from '@mui/icons-material/HeadsetMic';
 import shopeeLogo from '../assets/shopee_logo_no_bkg.png';
 import shopeeCartIcon from '../assets/shopee_cart_icon.png';
 import { useAuth } from '../context/AuthContext';
@@ -85,6 +86,16 @@ export default function Dashboard() {
       </main>
 
       <SideNav isOpen={isSideNavOpen} onClose={() => setIsSideNavOpen(false)} />
+
+      {/* Floating Customer Support Button */}
+      <button
+        className="customer-support-btn"
+        onClick={() => navigate('/chat')}
+        aria-label="Customer Support"
+        title="Chat with Customer Support"
+      >
+        <HeadsetMicIcon className="support-icon" />
+      </button>
 
       <style>{`
         .dashboard {
@@ -277,6 +288,64 @@ export default function Dashboard() {
 
           .dashboard-main {
             padding: var(--space-lg) 0;
+          }
+        }
+
+        /* Customer Support Floating Button */
+        .customer-support-btn {
+          position: fixed;
+          bottom: 24px;
+          right: 24px;
+          width: 60px;
+          height: 60px;
+          background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);
+          border: none;
+          border-radius: 50%;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          box-shadow: 0 4px 12px rgba(79, 70, 229, 0.4);
+          transition: all 0.3s ease;
+          z-index: 999;
+          animation: slideInUp 0.5s ease-out;
+        }
+
+        .customer-support-btn:hover {
+          transform: scale(1.1) translateY(-2px);
+          box-shadow: 0 6px 20px rgba(79, 70, 229, 0.6);
+        }
+
+        .customer-support-btn:active {
+          transform: scale(0.95);
+        }
+
+        .support-icon {
+          font-size: 28px;
+          color: #ffffff;
+        }
+
+        @keyframes slideInUp {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        @media (max-width: 768px) {
+          .customer-support-btn {
+            width: 56px;
+            height: 56px;
+            bottom: 20px;
+            right: 20px;
+          }
+
+          .support-icon {
+            font-size: 24px;
           }
         }
       `}</style>

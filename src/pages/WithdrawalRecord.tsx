@@ -1,68 +1,106 @@
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useLanguage } from '../i18n/LanguageContext';
 import flightBg from '../assets/flight_preview.png';
+import { getWithdrawalRecords, type WithdrawalRecord } from '../services/withdrawalService';
 
-// Mock data for demonstration
-const mockRecords = [
-    { id: 1, date: '2023-10-24 15:30', amount: '500.00', status: 'success', address: 'T9y...jK2' },
-    { id: 2, date: '2023-10-22 09:15', amount: '120.00', status: 'pending', address: 'T9y...jK2' },
-    { id: 3, date: '2023-10-20 18:45', amount: '1000.00', status: 'failed', address: 'T9y...jK2' },
-];
+export default function WithdrawalRecordPage() {
+  const navigate = useNavigate();
+  const { t } = useLanguage();
+  const [records, setRecords] = useState<WithdrawalRecord[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string>('');
 
-export default function WithdrawalRecord() {
-    const navigate = useNavigate();
-    const { t } = useLanguage();
-
-    const getStatusColor = (status: string) => {
-        switch (status) {
-            case 'success': return 'var(--color-accent-success)';
-            case 'pending': return 'var(--color-accent-warning)';
-            case 'failed': return 'var(--color-accent-danger)';
-            default: return 'var(--color-text-primary)';
-        }
+  useEffect(() => {
+    const fetchRecords = async () => {
+      try {
+        const data = await getWithdrawalRecords();
+        setRecords(data);
+      } catch (err) {
+        console.error('Error fetching withdrawal records:', err);
+        setError('Failed to load withdrawal records');
+      } finally {
+        setIsLoading(false);
+      }
     };
 
-    return (
-        <div className="record-page">
-            <header className="page-header">
-                <button className="back-btn" onClick={() => navigate('/dashboard')}>
-                    <ArrowBackIcon />
-                </button>
-                <h1 className="page-title">{t('withdrawalRecord')}</h1>
-                <div className="header-spacer"></div>
-            </header>
+    fetchRecords();
+  }, []);
 
-            <main className="page-content">
-                {mockRecords.length > 0 ? (
-                    <div className="record-list">
-                        {mockRecords.map(record => (
-                            <div key={record.id} className="record-card">
-                                <div className="record-header">
-                                    <span className="record-amount">${record.amount}</span>
-                                    <span className="record-status" style={{ color: getStatusColor(record.status) }}>
-                                        {t(record.status as any) || record.status.toUpperCase()}
-                                    </span>
-                                </div>
-                                <div className="record-row">
-                                    <span className="record-label">{t('date')}:</span>
-                                    <span className="record-value">{record.date}</span>
-                                </div>
-                                <div className="record-row">
-                                    <span className="record-label">{t('walletAddress')}:</span>
-                                    <span className="record-value">{record.address}</span>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                ) : (
-                    <div className="no-data">
-                        <p>{t('noData')}</p>
-                    </div>
-                )}
-            </main>
+  const getStatusConfig = (status: string) => {
+    const normalizedStatus = status.toLowerCase();
+    switch (normalizedStatus) {
+      case 'approved':
+      case 'success':
+        return { color: 'var(--color-accent-success)', key: 'success' };
+      case 'pending':
+        return { color: 'var(--color-accent-warning)', key: 'pending' };
+      case 'rejected':
+      case 'failed':
+        return { color: 'var(--color-accent-danger)', key: 'failed' };
+      default:
+        return { color: 'var(--color-text-primary)', key: normalizedStatus };
+    }
+  };
 
-            <style>{`
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleString();
+  };
+
+  return (
+    <div className="record-page">
+      <header className="page-header">
+        <button className="back-btn" onClick={() => navigate('/dashboard')}>
+          <ArrowBackIcon />
+        </button>
+        <h1 className="page-title">{t('withdrawalRecord')}</h1>
+        <div className="header-spacer"></div>
+      </header>
+
+      <main className="page-content">
+        {isLoading ? (
+          <div className="loading-state">Loading...</div>
+        ) : error ? (
+          <div className="error-message">{error}</div>
+        ) : records.length > 0 ? (
+          <div className="record-list">
+            {records.map(record => {
+              const statusConfig = getStatusConfig(record.status);
+              return (
+                <div key={record.id} className="record-card">
+                  <div className="record-header">
+                    <span className="record-amount">${record.amount.toFixed(2)}</span>
+                    <span className="record-status" style={{ color: statusConfig.color }}>
+                      {t(statusConfig.key as any) || record.status.toUpperCase()}
+                    </span>
+                  </div>
+                  <div className="record-row">
+                    <span className="record-label">{t('date')}:</span>
+                    <span className="record-value">{formatDate(record.createdAt)}</span>
+                  </div>
+                  <div className="record-row">
+                    <span className="record-label">{t('walletAddress')}:</span>
+                    <span className="record-value">{record.address.substring(0, 10)}...</span>
+                  </div>
+                  {record.adminNote && (
+                    <div className="record-row">
+                      <span className="record-label">Note:</span>
+                      <span className="record-value">{record.adminNote}</span>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        ) : (
+          <div className="no-data">
+            <p>{t('noData')}</p>
+          </div>
+        )}
+      </main>
+
+      <style>{`
         .record-page {
           min-height: 100vh;
           background: var(--color-bg-primary);
@@ -185,13 +223,20 @@ export default function WithdrawalRecord() {
           font-weight: 500;
         }
 
-        .no-data {
+        .no-data, .loading-state, .error-message {
           text-align: center;
           padding: 40px;
           color: var(--color-text-muted);
           font-size: 16px;
+          background: var(--color-bg-secondary);
+          border-radius: 8px;
+        }
+        
+        .error-message {
+            color: var(--color-accent-danger);
+            background: #fee;
         }
       `}</style>
-        </div>
-    );
+    </div>
+  );
 }

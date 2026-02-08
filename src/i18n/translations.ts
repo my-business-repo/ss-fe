@@ -99,6 +99,8 @@ export const translations = {
         chainName: 'Chain Name',
         walletAddress: 'Wallet Address',
         walletAddressCantBeEmpty: 'Wallet Address Can\'t Be Empty',
+        withdrawalAddressAddedSub: 'Withdrawal Address Added Successfully',
+        accountName: 'Account Name',
 
         // Records
         date: 'Date',

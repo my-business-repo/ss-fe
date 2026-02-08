@@ -1,96 +1,115 @@
 import { useState } from 'react';
+import { changePassword, changeFundPassword } from '../services/customerService';
 import { useNavigate, useLocation } from 'react-router-dom';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 export default function ChangePassword() {
-    const navigate = useNavigate();
-    const location = useLocation();
-    const passwordType = location.pathname.includes('login') ? 'Login' : 'Fund';
+  const navigate = useNavigate();
+  const location = useLocation();
+  const passwordType = location.pathname.includes('login') ? 'Login' : 'Fund';
 
-    const [oldPassword, setOldPassword] = useState('');
-    const [newPassword, setNewPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
+  const [oldPassword, setOldPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
 
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
+  const [isLoading, setIsLoading] = useState(false);
 
-        if (newPassword !== confirmPassword) {
-            alert('New password and confirm password do not match!');
-            return;
-        }
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
 
-        if (newPassword.length < 6) {
-            alert('Password must be at least 6 characters long!');
-            return;
-        }
+    if (newPassword !== confirmPassword) {
+      alert('New password and confirm password do not match!');
+      return;
+    }
 
-        // Handle password change
-        console.log('Password change submitted:', { type: passwordType, oldPassword, newPassword });
-        alert(`${passwordType} password changed successfully!`);
-        navigate('/profile');
-    };
+    if (newPassword.length < 6) {
+      alert('Password must be at least 6 characters long!');
+      return;
+    }
 
-    return (
-        <div className="change-password-page">
-            <header className="password-header">
-                <button className="back-btn" onClick={() => navigate('/profile')}>
-                    <ArrowBackIcon />
-                </button>
-                <h1 className="password-title">Modify password</h1>
-                <div className="header-spacer"></div>
-            </header>
+    setIsLoading(true);
+    try {
+      if (passwordType === 'Login') {
+        await changePassword({ oldPassword, newPassword });
+      } else {
+        await changeFundPassword({
+          oldFundPassword: oldPassword || undefined,
+          newFundPassword: newPassword
+        });
+      }
+      alert(`${passwordType} password changed successfully!`);
+      navigate('/profile');
+    } catch (error) {
+      console.error(`Failed to change ${passwordType.toLowerCase()} password:`, error);
+      alert(error instanceof Error ? error.message : `Failed to change ${passwordType.toLowerCase()} password`);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-            <main className="password-content">
-                <p className="password-notice">
-                    Please Remember Your Password. If You Forgot Your Password, Please Contact Customer Service.
-                </p>
+  return (
+    <div className="change-password-page">
+      <header className="password-header">
+        <button className="back-btn" onClick={() => navigate('/profile')}>
+          <ArrowBackIcon />
+        </button>
+        <h1 className="password-title">Modify {passwordType.toLowerCase()} password</h1>
+        <div className="header-spacer"></div>
+      </header>
 
-                <form onSubmit={handleSubmit} className="password-form">
-                    <div className="form-group">
-                        <label className="form-label">* Old Password</label>
-                        <input
-                            type="password"
-                            className="form-input"
-                            placeholder="Please Enter Old Password"
-                            value={oldPassword}
-                            onChange={(e) => setOldPassword(e.target.value)}
-                            required
-                        />
-                    </div>
+      <main className="password-content">
+        <p className="password-notice">
+          Please Remember Your Password. If You Forgot Your Password, Please Contact Customer Service.
+        </p>
 
-                    <div className="form-group">
-                        <label className="form-label">* New Password</label>
-                        <input
-                            type="password"
-                            className="form-input"
-                            placeholder="Please Enter Your New Password"
-                            value={newPassword}
-                            onChange={(e) => setNewPassword(e.target.value)}
-                            required
-                            minLength={6}
-                        />
-                    </div>
+        <form onSubmit={handleSubmit} className="password-form">
+          <div className="form-group">
+            <label className="form-label">* Old Password</label>
+            <input
+              type="password"
+              className="form-input"
+              placeholder="Please Enter Old Password"
+              value={oldPassword}
+              onChange={(e) => setOldPassword(e.target.value)}
+              disabled={isLoading}
+            />
+          </div>
 
-                    <div className="form-group">
-                        <label className="form-label">* Confirm Password</label>
-                        <input
-                            type="password"
-                            className="form-input"
-                            placeholder="Please Enter Your Confirm Password"
-                            value={confirmPassword}
-                            onChange={(e) => setConfirmPassword(e.target.value)}
-                            required
-                            minLength={6}
-                        />
-                    </div>
+          <div className="form-group">
+            <label className="form-label">* New Password</label>
+            <input
+              type="password"
+              className="form-input"
+              placeholder="Please Enter Your New Password"
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+              required
+              minLength={6}
+              disabled={isLoading}
+            />
+          </div>
 
-                    <button type="submit" className="submit-btn">
-                        Reset password
-                    </button>
-                </form>
-            </main>
+          <div className="form-group">
+            <label className="form-label">* Confirm Password</label>
+            <input
+              type="password"
+              className="form-input"
+              placeholder="Please Enter Your Confirm Password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              required
+              minLength={6}
+              disabled={isLoading}
+            />
+          </div>
 
-            <style>{`
+          <button type="submit" className="submit-btn" disabled={isLoading}>
+            {isLoading ? 'Processing...' : 'Reset password'}
+          </button>
+        </form>
+      </main>
+
+      <style>{`
         .change-password-page {
           min-height: 100vh;
           background: var(--color-bg-primary);
@@ -278,6 +297,6 @@ export default function ChangePassword() {
           }
         }
       `}</style>
-        </div>
-    );
+    </div>
+  );
 }

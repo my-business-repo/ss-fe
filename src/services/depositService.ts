@@ -57,3 +57,53 @@ export const submitDeposit = async (data: DepositRequest): Promise<DepositRespon
         throw new Error('An unexpected error occurred during deposit submission');
     }
 };
+
+export interface DepositRecord {
+    id: number;
+    transaction_id: string;
+    amount: number;
+    status: string;
+    proofImageUrl: string | null;
+    createdAt: string;
+    processedAt: string | null;
+    adminNote: string | null;
+    account: {
+        currency: string;
+    };
+}
+
+export interface DepositHistoryResponse {
+    success: boolean;
+    data: DepositRecord[];
+}
+
+/**
+ * Get all deposit records for the current user
+ */
+export const getDepositRecords = async (): Promise<DepositRecord[]> => {
+    try {
+        const token = localStorage.getItem('authToken');
+        if (!token) throw new Error('No auth token found');
+
+        const response = await fetch(getApiUrl('v1/customer/deposit'), {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+        });
+
+        const responseData = await response.json();
+
+        if (!response.ok) {
+            throw new Error(responseData.error || 'Failed to fetch deposit records');
+        }
+
+        return responseData.data;
+    } catch (error) {
+        if (error instanceof Error) {
+            throw error;
+        }
+        throw new Error('Failed to fetch deposit records');
+    }
+};

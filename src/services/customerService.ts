@@ -42,8 +42,10 @@ export interface SigninResponse {
     token: string;
     customer: {
         id: number;
+        user_id: string;
         name: string;
         email: string;
+        referCode: string;
         level?: {
             id: number;
             name: string;
@@ -120,13 +122,22 @@ export const signinCustomer = async (data: SigninData): Promise<SigninResponse> 
     }
 };
 
+export interface AccountInfo {
+    id: number;
+    account_id: string;
+    balance: number;
+    profit: number;
+    currency: string;
+    status: string;
+}
+
 /**
  * Verify JWT token with backend
  * @param token JWT token to verify
- * @returns Promise with customer data if valid
+ * @returns Promise with customer and account data if valid
  * @throws Error if token is invalid or expired
  */
-export const verifyToken = async (token: string): Promise<SigninResponse['customer']> => {
+export const verifyToken = async (token: string): Promise<{ customer: SigninResponse['customer'], account: AccountInfo | null }> => {
     try {
         const response = await fetch(getApiUrl('v1/customer/verify-token'), {
             method: 'POST',
@@ -142,7 +153,10 @@ export const verifyToken = async (token: string): Promise<SigninResponse['custom
             throw new Error(responseData.error || 'Token verification failed');
         }
 
-        return responseData.customer;
+        return {
+            customer: responseData.customer,
+            account: responseData.account || null
+        };
     } catch (error) {
         if (error instanceof Error) {
             throw error;
@@ -228,5 +242,88 @@ export const getCustomerInfo = async (): Promise<CustomerInfo[]> => {
             throw error;
         }
         throw new Error('Failed to fetch customer information');
+    }
+};
+
+export interface ChangePasswordData {
+    oldPassword: string;
+    newPassword: string;
+}
+
+export interface ChangePasswordResponse {
+    success: boolean;
+    message: string;
+}
+
+/**
+ * Change customer login password
+ * @param data Old and new password
+ * @returns Promise with success message
+ */
+export const changePassword = async (data: ChangePasswordData): Promise<ChangePasswordResponse> => {
+    try {
+        const token = localStorage.getItem('authToken');
+        if (!token) throw new Error('No auth token found');
+
+        const response = await fetch(getApiUrl('v1/customer/change-password'), {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify(data)
+        });
+
+        const responseData = await response.json();
+
+        if (!response.ok) {
+            throw new Error(responseData.error || 'Failed to change password');
+        }
+
+        return responseData;
+    } catch (error) {
+        if (error instanceof Error) {
+            throw error;
+        }
+        throw new Error('Failed to change password');
+    }
+}
+
+export interface ChangeFundPasswordData {
+    oldFundPassword?: string;
+    newFundPassword: string;
+}
+
+/**
+ * Change customer fund password
+ * @param data Old and new fund password
+ * @returns Promise with success message
+ */
+export const changeFundPassword = async (data: ChangeFundPasswordData): Promise<ChangePasswordResponse> => {
+    try {
+        const token = localStorage.getItem('authToken');
+        if (!token) throw new Error('No auth token found');
+
+        const response = await fetch(getApiUrl('v1/customer/change-fund-password'), {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify(data)
+        });
+
+        const responseData = await response.json();
+
+        if (!response.ok) {
+            throw new Error(responseData.error || 'Failed to change fund password');
+        }
+
+        return responseData;
+    } catch (error) {
+        if (error instanceof Error) {
+            throw error;
+        }
+        throw new Error('Failed to change fund password');
     }
 };

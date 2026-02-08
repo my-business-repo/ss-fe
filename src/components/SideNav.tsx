@@ -1,3 +1,4 @@
+import React from 'react';
 import HomeIcon from '@mui/icons-material/Home';
 import GetAppIcon from '@mui/icons-material/GetApp';
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
@@ -18,7 +19,8 @@ interface SideNavProps {
 export default function SideNav({ isOpen, onClose }: SideNavProps) {
   const { t } = useLanguage();
   const navigate = useNavigate();
-  const { logout, user } = useAuth();
+  const { logout, user, account } = useAuth();
+
 
   const handleSignOut = () => {
     logout(); // Clear authentication state
@@ -42,7 +44,7 @@ export default function SideNav({ isOpen, onClose }: SideNavProps) {
             <div className="card-icon">💳</div>
             <div className="card-info">
               <div className="card-route">{user?.name || 'Guest'} ★ {user?.level?.name || 'VIP1'}</div>
-              <div className="card-details">Card Balance: $0.00</div>
+              <div className="card-details">Balance: ${account?.balance.toFixed(2) || '0.00'}</div>
             </div>
             <div className="card-percentage">100%</div>
           </div>
@@ -50,11 +52,11 @@ export default function SideNav({ isOpen, onClose }: SideNavProps) {
           {/* Balance Display */}
           <div className="balance-display">
             <div className="balance-card">
-              <div className="balance-amount">$0.00</div>
-              <div className="balance-label">Card Balance</div>
+              <div className="balance-amount">${account?.balance.toFixed(2) || '0.00'}</div>
+              <div className="balance-label">Balance</div>
             </div>
             <div className="balance-card">
-              <div className="balance-amount">$0.00</div>
+              <div className="balance-amount">${account?.profit.toFixed(2) || '0.00'}</div>
               <div className="balance-label">{t('totalProfit')}</div>
             </div>
           </div>
