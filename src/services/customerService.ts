@@ -150,3 +150,83 @@ export const verifyToken = async (token: string): Promise<SigninResponse['custom
         throw new Error('Failed to verify token');
     }
 };
+
+export interface CustomerAccount {
+    id: number;
+    account_id: string;
+    balance: number;
+    profit: number;
+    currency: string;
+    status: string;
+    createdAt: string;
+    updatedAt: string;
+    recentTransactions: Array<{
+        id: number;
+        transaction_id: string;
+        type: string;
+        amount: number;
+        status: string;
+        createdAt: string;
+        processedAt: string | null;
+    }>;
+}
+
+export interface CustomerInfo {
+    id: number;
+    user_id: string;
+    name: string;
+    email: string;
+    phoneNumber: string;
+    referCode: string;
+    status: string;
+    createdAt: string;
+    updatedAt: string;
+    level: {
+        id: number;
+        level_id: number;
+        name: string;
+        icon: string;
+        upgradePrice: number;
+        commissionRate: number;
+        dailyOrderLimit: number;
+        minWithdrawalAmount: number;
+        maxWithdrawalAmount: number;
+        dailyWithdrawalCount: number;
+    };
+    accounts: CustomerAccount[];
+}
+
+export interface CustomerInfoResponse {
+    success: boolean;
+    count: number;
+    customers: CustomerInfo[];
+}
+
+/**
+ * Fetch customer information including accounts
+ * @returns Promise with array of customer info including accounts
+ * @throws Error if request fails
+ */
+export const getCustomerInfo = async (): Promise<CustomerInfo[]> => {
+    try {
+        const response = await fetch(getApiUrl('v1/customer'), {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+
+        const responseData = await response.json();
+
+        if (!response.ok) {
+            throw new Error(responseData.error || 'Failed to fetch customer info');
+        }
+
+        return responseData.customers;
+    } catch (error) {
+        if (error instanceof Error) {
+            throw error;
+        }
+        throw new Error('Failed to fetch customer information');
+    }
+};

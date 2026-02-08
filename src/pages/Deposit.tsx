@@ -11,7 +11,6 @@ export default function Deposit() {
   const { t } = useLanguage();
   const [selectedMethod, setSelectedMethod] = useState<'trc20' | 'erc20'>('trc20');
   const [amount, setAmount] = useState('');
-  const currentBalance = 0.00;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -36,13 +35,6 @@ export default function Deposit() {
       </header>
 
       <main className="deposit-content">
-        <div className="balance-card">
-          <div className="balance-label">{t('topUpAmount')}</div>
-          <div className="balance-amount">
-            {currentBalance.toFixed(2)} <span className="currency">USDT</span>
-          </div>
-        </div>
-
         <div className="method-buttons">
           <button
             className={`method-btn ${selectedMethod === 'trc20' ? 'active' : ''}`}
