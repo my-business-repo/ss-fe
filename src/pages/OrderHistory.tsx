@@ -4,6 +4,7 @@ import { Box, Typography, Container, Card, CardContent, Chip, CircularProgress, 
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import CloseIcon from '@mui/icons-material/Close';
 import { getOrders, confirmOrder, completeOrder, type OrderHistoryItem, type StartOrderResponse } from '../services/customerService';
+import LoadingOverlay from '../components/LoadingOverlay';
 
 export default function OrderHistory() {
     const navigate = useNavigate();
@@ -13,6 +14,7 @@ export default function OrderHistory() {
     const [error, setError] = useState<string | null>(null);
     const [isDepositDialogOpen, setIsDepositDialogOpen] = useState(false);
     const [depositErrorMsg, setDepositErrorMsg] = useState('');
+    const [isOverlayLoading, setIsOverlayLoading] = useState(false);
 
     // Drawer state
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -41,6 +43,7 @@ export default function OrderHistory() {
 
     const handleConfirmOrder = async (orderId: string) => {
         setSubmittingId(orderId);
+        setIsOverlayLoading(true);
         try {
             const response = await confirmOrder(orderId);
             // Success - refresh list and open drawer
@@ -57,12 +60,14 @@ export default function OrderHistory() {
             }
         } finally {
             setSubmittingId(null);
+            setIsOverlayLoading(false);
         }
     };
 
     const handleCompleteOrder = async () => {
         if (!currentOrder) return;
         setSubmittingId(currentOrder.order_id);
+        setIsOverlayLoading(true);
         try {
             await completeOrder(currentOrder.order_id);
             setIsDrawerOpen(false);
@@ -73,6 +78,7 @@ export default function OrderHistory() {
             alert(error.message || 'Failed to complete order');
         } finally {
             setSubmittingId(null);
+            setIsOverlayLoading(false);
         }
     };
 
@@ -95,6 +101,7 @@ export default function OrderHistory() {
 
     return (
         <Container maxWidth="sm" sx={{ pb: 10, pt: 2 }}>
+            <LoadingOverlay open={isOverlayLoading} />
             <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
                 <IconButton onClick={() => navigate(-1)} sx={{ mr: 1 }}>
                     <ArrowBackIcon />

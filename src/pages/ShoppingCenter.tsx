@@ -15,6 +15,7 @@ import ebayLogo from '../assets/ebay_logo.png';
 import aliexpressLogo from '../assets/aliexpress_logo.png';
 import { useAuth } from '../context/AuthContext';
 import { startOrder, confirmOrder, completeOrder, activateOrderPlan, type StartOrderResponse } from '../services/customerService';
+import LoadingOverlay from '../components/LoadingOverlay';
 import 'swiper/css';
 import 'swiper/css/pagination';
 
@@ -37,53 +38,43 @@ export default function ShoppingCenter() {
     const handleStartOrder = async () => {
         if (!orderPlan) return;
 
+        setIsLoadingOrder(true);
         let currentPlanOrders = orderPlan.orders;
 
-        // Check if current plan is completed
-        if (orderPlan.status === 'COMPLETED') {
-            setIsLoadingOrder(true);
-            try {
-                const activationResponse = await activateOrderPlan();
-                if (activationResponse && activationResponse.orderPlan) {
-                    // Refresh context to sync with text
-                    await refreshOrderPlan();
-                    // Use the new orders immediately
-                    currentPlanOrders = activationResponse.orderPlan.orders;
-                } else {
-                    console.error('Failed to activate new order plan');
-                    // Fallback or alert? Proceeding might fail if no orders.
+        try {
+            // Check if current plan is completed
+            if (orderPlan.status === 'COMPLETED') {
+                try {
+                    const activationResponse = await activateOrderPlan();
+                    if (activationResponse && activationResponse.orderPlan) {
+                        // Refresh context to sync with text
+                        await refreshOrderPlan();
+                        // Use the new orders immediately
+                        currentPlanOrders = activationResponse.orderPlan.orders;
+                    } else {
+                        console.error('Failed to activate new order plan');
+                    }
+                } catch (error) {
+                    console.error('Error activating new plan:', error);
                 }
-            } catch (error) {
-                console.error('Error activating new plan:', error);
-            } finally {
-                setIsLoadingOrder(false); // We'll set it true again if we find an order, or keep it false?
-                // Actually, if we are about to start an order, we should keep it true or manage it carefully.
             }
-        }
 
-        // Find the first pending order
-        // Note: orderPlan.orders might not be populated if we just fetched the plan summary
-        // But assumed to be populated based on previous context. If not, we should probably fetch details.
-        // For now, let's assume looking at the 'completedOrders' count is enough to know which to fetch?
-        // Actually, the user requirement says "get the first order id (with status of not start)".
-        // We rely on the orderPlan.orders array to be present and sorted by orderNumber.
-
-        const nextOrder = currentPlanOrders?.find((o: any) => o.status === 'NOT_START');
-        if (nextOrder) {
-            setIsLoadingOrder(true);
-            try {
-                const response = await startOrder(nextOrder.order_id);
-                setCurrentOrder(response.order);
-                setIsDrawerOpen(true);
-            } catch (error) {
-                console.error('Failed to start order:', error);
-                // Optionally show error toast
-            } finally {
-                setIsLoadingOrder(false);
+            // Find the first pending order
+            const nextOrder = currentPlanOrders?.find((o: any) => o.status === 'NOT_START');
+            if (nextOrder) {
+                try {
+                    const response = await startOrder(nextOrder.order_id);
+                    setCurrentOrder(response.order);
+                    setIsDrawerOpen(true);
+                } catch (error) {
+                    console.error('Failed to start order:', error);
+                }
+            } else {
+                console.log('No pending orders found');
+                setIsPendingOrdersDialogOpen(true);
             }
-        } else {
-            console.log('No pending orders found');
-            setIsPendingOrdersDialogOpen(true);
+        } finally {
+            setIsLoadingOrder(false);
         }
     };
 
@@ -147,6 +138,7 @@ export default function ShoppingCenter() {
 
     return (
         <div className="shopping-center">
+            <LoadingOverlay open={isLoadingOrder} />
             <SideNav isOpen={isSideNavOpen} onClose={() => setIsSideNavOpen(false)} />
 
             <header className="shopping-header">
