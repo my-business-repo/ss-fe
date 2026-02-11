@@ -12,11 +12,14 @@ import { useAuth } from '../context/AuthContext';
 
 export default function Dashboard() {
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user, refreshOrderPlan } = useAuth();
   const [isSideNavOpen, setIsSideNavOpen] = useState(false);
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
 
   useEffect(() => {
+    // Refresh order plan data
+    refreshOrderPlan();
+
     // Load theme from localStorage on mount
     const savedTheme = localStorage.getItem('theme') as 'light' | 'dark' | null;
     if (savedTheme) {

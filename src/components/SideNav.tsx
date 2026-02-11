@@ -86,10 +86,10 @@ export default function SideNav({ isOpen, onClose }: SideNavProps) {
               <div className="menu-icon"><InfoIcon /></div>
               <div className="menu-label">{t('aboutUs')}</div>
             </Link>
-            <a href="#" className="quick-menu-item">
+            <Link to="/order-history" className="quick-menu-item" onClick={onClose}>
               <div className="menu-icon"><HistoryIcon /></div>
               <div className="menu-label">{t('history')}</div>
-            </a>
+            </Link>
             <Link to="/customer-service" className="quick-menu-item" onClick={onClose}>
               <div className="menu-icon"><PeopleIcon /></div>
               <div className="menu-label">{t('customer')}</div>

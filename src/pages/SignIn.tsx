@@ -5,7 +5,7 @@ import flightPreview from '../assets/flight_preview.png';
 import { useLanguage } from '../i18n/LanguageContext';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-import { signinCustomer } from '../services/customerService';
+import { signinCustomer, activateOrderPlan, getOrderPlan } from '../services/customerService';
 import { useAuth } from '../context/AuthContext';
 
 export default function SignIn() {
@@ -36,8 +36,31 @@ export default function SignIn() {
 
         console.log('Signin successful:', response);
 
-        // Use AuthContext to manage authentication state
-        login(response.token, response.customer);
+        // Activate order plan automatically
+        let orderPlan = null;
+        try {
+          // We await this so the plan is created before they reach dashboard
+          const planResponse = await activateOrderPlan(response.token);
+          if (planResponse && planResponse.orderPlan) {
+            orderPlan = planResponse.orderPlan;
+          } else {
+            // If activation didn't return a plan (maybe it returned null because it exists), try fetching it
+            // Note: Our updated activateOrderPlan might return the existing plan now, but just in case
+            try {
+              const existingPlan = await getOrderPlan(response.token);
+              if (existingPlan) orderPlan = existingPlan;
+            } catch (fetchErr) {
+              console.error('Failed to fetch existing order plan:', fetchErr);
+            }
+          }
+        } catch (planError) {
+          // Log error but don't stop login flow
+          console.error('Failed to activate order plan on login:', planError);
+        }
+
+        // Use AuthContext to manage authentication state with the plan
+        // The any cast is needed if the AuthContext type definition hasn't fully updated in the IDE's view yet
+        login(response.token, response.customer, undefined, orderPlan as any);
 
         // Navigate to dashboard on success
         navigate('/dashboard');

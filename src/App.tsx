@@ -21,6 +21,7 @@ import WithdrawalRecord from './pages/WithdrawalRecord';
 import RechargeRecord from './pages/RechargeRecord';
 import Language from './pages/Language';
 import ShoppingCenter from './pages/ShoppingCenter';
+import OrderHistory from './pages/OrderHistory';
 
 function App() {
   return (
@@ -51,6 +52,7 @@ function App() {
             <Route path="/change-fund-password" element={<ProtectedRoute><ChangePassword /></ProtectedRoute>} />
             <Route path="/language" element={<ProtectedRoute><Language /></ProtectedRoute>} />
             <Route path="/shopping-center" element={<ProtectedRoute><ShoppingCenter /></ProtectedRoute>} />
+            <Route path="/order-history" element={<ProtectedRoute><OrderHistory /></ProtectedRoute>} />
 
             {/* Fallback */}
             <Route path="*" element={<Navigate to="/" replace />} />

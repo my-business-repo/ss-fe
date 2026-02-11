@@ -13,7 +13,7 @@ import 'swiper/css/pagination';
 
 export default function ProductCard() {
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user, orderPlan, account } = useAuth();
   const shops = [
     { name: 'Amazon', logo: amazonLogo, rating: 5 },
     { name: 'eBay', logo: ebayLogo, rating: 4 },
@@ -42,7 +42,7 @@ export default function ProductCard() {
             </div>
             <div className="pricing-info">
               <span className="pricing-label">Total Balance</span>
-              <span className="pricing-amount">$803.96</span>
+              <span className="pricing-amount">${account?.balance?.toFixed(2) || '0.00'}</span>
             </div>
           </div>
 
@@ -52,7 +52,7 @@ export default function ProductCard() {
             </div>
             <div className="pricing-info">
               <span className="pricing-label">Total Profit</span>
-              <span className="pricing-amount">$0.00</span>
+              <span className="pricing-amount">${account?.profit?.toFixed(2) || '0.00'}</span>
             </div>
           </div>
         </div>
@@ -89,7 +89,7 @@ export default function ProductCard() {
 
           <button className="starting-btn" onClick={() => navigate('/shopping-center')}>
             <span className="starting-text">Starting</span>
-            <span className="starting-count">(0/0)</span>
+            <span className="starting-count">({orderPlan?.completedOrders || 0}/{orderPlan?.totalOrders || 0})</span>
             <span className="starting-arrow">→</span>
           </button>
         </div>
