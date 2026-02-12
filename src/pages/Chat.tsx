@@ -6,10 +6,11 @@ import EmojiEmotionsIcon from '@mui/icons-material/EmojiEmotions';
 import ImageIcon from '@mui/icons-material/Image';
 import { useAuth } from '../context/AuthContext';
 import { db } from '../config/firebaseConfig';
-import { collection, addDoc, query, orderBy, onSnapshot, serverTimestamp, Timestamp } from 'firebase/firestore';
+import { collection, query, orderBy, onSnapshot, Timestamp } from 'firebase/firestore';
 import EmojiPicker from 'emoji-picker-react';
 import type { EmojiClickData } from 'emoji-picker-react';
 import { getApiUrl } from '../config/api';
+import { sendMessage } from '../services/chatService';
 
 interface Message {
   id: string;
@@ -61,7 +62,7 @@ export default function Chat() {
 
         return {
           id: doc.id,
-          sender: data.sender,
+          sender: data.sender === 'customer' ? 'user' : data.sender,
           content: data.content || data.text || '',
           image: data.img || data.image,
           timestamp: timeDisplay,
@@ -80,13 +81,8 @@ export default function Chat() {
   const handleSendMessage = async () => {
     if (inputMessage.trim() && user?.user_id) {
       try {
-        const messagesRef = collection(db, 'chats', user.user_id, 'messages');
-        await addDoc(messagesRef, {
-          sender: 'user',
-          text: inputMessage,
-          content: inputMessage,
-          createdAt: serverTimestamp()
-        });
+        // Use API to send message so admin gets notification
+        await sendMessage({ text: inputMessage });
         setInputMessage('');
       } catch (error) {
         console.error("Error sending message: ", error);
@@ -126,12 +122,8 @@ export default function Chat() {
       }
 
       // Send image URL to Firebase
-      const messagesRef = collection(db, 'chats', user.user_id, 'messages');
-      await addDoc(messagesRef, {
-        sender: 'user',
-        img: data.url,
-        createdAt: serverTimestamp()
-      });
+      // Send image URL to Firebase via API
+      await sendMessage({ img: data.url });
 
     } catch (error) {
       console.error('Error uploading image:', error);
