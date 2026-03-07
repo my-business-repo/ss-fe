@@ -59,7 +59,15 @@ export default function ShoppingCenter() {
                 }
             }
 
-            // Find the first pending order
+            // First check if there is a pending order
+            const pendingOrder = currentPlanOrders?.find((o: any) => o.status === 'PENDING');
+            if (pendingOrder) {
+                setCurrentOrder(pendingOrder);
+                setIsDrawerOpen(true);
+                return;
+            }
+
+            // Find the first not start order
             const nextOrder = currentPlanOrders?.find((o: any) => o.status === 'NOT_START');
             if (nextOrder) {
                 try {
@@ -70,7 +78,7 @@ export default function ShoppingCenter() {
                     console.error('Failed to start order:', error);
                 }
             } else {
-                console.log('No pending orders found');
+                console.log('No unstarted orders found');
                 setIsPendingOrdersDialogOpen(true);
             }
         } finally {
@@ -314,7 +322,7 @@ export default function ShoppingCenter() {
                             <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
                                 <Typography variant="body2">Order Date</Typography>
                                 <Typography variant="body2" fontWeight="600">
-                                    {new Date(currentOrder.createdAt).toLocaleString()}
+                                    {currentOrder.createdAt ? new Date(currentOrder.createdAt).toLocaleString() : 'N/A'}
                                 </Typography>
                             </Box>
                             {currentOrder.completedAt && (

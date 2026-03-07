@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
-import { verifyToken, type AccountInfo, type OrderPlan, getOrderPlan } from '../services/customerService';
+import { verifyToken, type AccountInfo, type OrderPlan, getOrderPlan, activateOrderPlan } from '../services/customerService';
 
 interface Customer {
     id: number;
@@ -77,6 +77,12 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
                             if (plan) {
                                 setOrderPlan(plan);
                                 localStorage.setItem('orderPlan', JSON.stringify(plan));
+                            } else {
+                                const newPlanResponse = await activateOrderPlan(storedToken);
+                                if (newPlanResponse && newPlanResponse.orderPlan) {
+                                    setOrderPlan(newPlanResponse.orderPlan);
+                                    localStorage.setItem('orderPlan', JSON.stringify(newPlanResponse.orderPlan));
+                                }
                             }
                         } catch (planError) {
                             console.error('Failed to fetch order plan during init:', planError);
@@ -135,6 +141,17 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
             if (plan) {
                 setOrderPlan(plan);
                 localStorage.setItem('orderPlan', JSON.stringify(plan));
+                console.log('Order plan refreshed:', plan);
+            } else {
+                const newPlanResponse = await activateOrderPlan(token);
+                if (newPlanResponse && newPlanResponse.orderPlan) {
+                    setOrderPlan(newPlanResponse.orderPlan);
+                    localStorage.setItem('orderPlan', JSON.stringify(newPlanResponse.orderPlan));
+                    console.log('New order plan activated and refreshed:', newPlanResponse.orderPlan);
+                } else {
+                    setOrderPlan(null);
+                    localStorage.removeItem('orderPlan');
+                }
             }
         } catch (error) {
             console.error('Failed to refresh order plan:', error);
