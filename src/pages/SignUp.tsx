@@ -52,6 +52,13 @@ export default function SignUp() {
       return;
     }
 
+    // Phone number validation (at least 7 digits)
+    const phoneDigits = formData.phone.replace(/\D/g, '');
+    if (phoneDigits.length < 7) {
+      setError('Phone number must have at least 7 digits');
+      return;
+    }
+
     if (formData.name && formData.email && formData.phone && formData.password && formData.fundPassword) {
       setIsLoading(true);
       try {
