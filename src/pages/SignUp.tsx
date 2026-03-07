@@ -7,13 +7,16 @@ import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-import { signupCustomer } from '../services/customerService';
+import { signupCustomer, signinCustomer, activateOrderPlan, getOrderPlan } from '../services/customerService';
+import { useAuth } from '../context/AuthContext';
 
 export default function SignUp() {
   const navigate = useNavigate();
   const { t } = useLanguage();
+  const { login } = useAuth();
   const [formData, setFormData] = useState({
-    username: '',
+    name: '',
+    email: '',
     phone: '',
     password: '',
     confirmPassword: '',
@@ -42,13 +45,20 @@ export default function SignUp() {
       return;
     }
 
-    if (formData.username && formData.phone && formData.password && formData.fundPassword) {
+    // Basic email regex validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email)) {
+      setError('Please enter a valid email address');
+      return;
+    }
+
+    if (formData.name && formData.email && formData.phone && formData.password && formData.fundPassword) {
       setIsLoading(true);
       try {
         // Call the signup API
         const response = await signupCustomer({
-          name: formData.username,
-          email: formData.username, // Using username as email for now
+          name: formData.name,
+          email: formData.email,
           password: formData.password,
           fundPassword: formData.fundPassword,
           phoneNumber: formData.phone,
@@ -57,8 +67,42 @@ export default function SignUp() {
 
         console.log('Signup successful:', response);
 
-        // Navigate to login page on success
-        navigate('/');
+        // Auto-login after successful registration
+        try {
+          const authResponse = await signinCustomer({
+            email: formData.email,
+            password: formData.password,
+          });
+
+          // Activate order plan automatically for new user
+          let orderPlan = null;
+          try {
+            const planResponse = await activateOrderPlan(authResponse.token);
+            if (planResponse && planResponse.orderPlan) {
+              orderPlan = planResponse.orderPlan;
+            } else {
+              try {
+                const existingPlan = await getOrderPlan(authResponse.token);
+                if (existingPlan) orderPlan = existingPlan;
+              } catch (fetchErr) {
+                console.error('Failed to fetch existing order plan:', fetchErr);
+              }
+            }
+          } catch (planError) {
+            console.error('Failed to activate order plan on signup:', planError);
+          }
+
+          // Use AuthContext to manage authentication state with the plan
+          login(authResponse.token, authResponse.customer, undefined, orderPlan as any);
+
+          // Navigate to dashboard on success
+          navigate('/dashboard');
+        } catch (loginErr) {
+          console.error('Auto-login failed after signup:', loginErr);
+          // Fallback to login page if auto-login fails for some reason
+          navigate('/');
+        }
+
       } catch (err) {
         const errorMessage = err instanceof Error ? err.message : 'An unexpected error occurred';
         setError(errorMessage);
@@ -100,14 +144,27 @@ export default function SignUp() {
               </div>
             )}
 
-            {/* Username */}
+            {/* Name */}
             <div className="form-group">
               <input
                 type="text"
-                name="username"
+                name="name"
                 className="form-input"
-                placeholder={t('enterUsername')}
-                value={formData.username}
+                placeholder="Enter your name"
+                value={formData.name}
+                onChange={handleChange}
+                required
+              />
+            </div>
+
+            {/* Email */}
+            <div className="form-group">
+              <input
+                type="email"
+                name="email"
+                className="form-input"
+                placeholder="Enter your email address"
+                value={formData.email}
                 onChange={handleChange}
                 required
               />

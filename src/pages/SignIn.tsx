@@ -13,7 +13,7 @@ export default function SignIn() {
   const { t } = useLanguage();
   const { login } = useAuth();
   const [formData, setFormData] = useState({
-    email: '',
+    emailOrUsername: '',
     password: '',
     remember: false
   });
@@ -25,12 +25,14 @@ export default function SignIn() {
     e.preventDefault();
     setError(null);
 
-    if (formData.email && formData.password) {
+    if (formData.emailOrUsername && formData.password) {
       setIsLoading(true);
       try {
+        const isEmail = formData.emailOrUsername.includes('@');
+
         // Call the signin API
         const response = await signinCustomer({
-          email: formData.email,
+          ...(isEmail ? { email: formData.emailOrUsername } : { username: formData.emailOrUsername }),
           password: formData.password,
         });
 
@@ -102,14 +104,14 @@ export default function SignIn() {
             )}
 
             <div className="form-group">
-              <label htmlFor="email" className="form-label">Email</label>
+              <label htmlFor="emailOrUsername" className="form-label">Email or Username</label>
               <input
-                type="email"
-                id="email"
-                name="email"
+                type="text"
+                id="emailOrUsername"
+                name="emailOrUsername"
                 className="form-input"
-                placeholder="Enter your email"
-                value={formData.email}
+                placeholder="Enter your email or username"
+                value={formData.emailOrUsername}
                 onChange={handleChange}
                 required
               />

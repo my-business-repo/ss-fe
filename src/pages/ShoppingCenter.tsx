@@ -10,9 +10,9 @@ import LightModeIcon from '@mui/icons-material/LightMode';
 import { Drawer, Button, Typography, Box, IconButton, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import SideNav from '../components/SideNav';
-import amazonLogo from '../assets/amazon_logo.png';
-import ebayLogo from '../assets/ebay_logo.png';
-import aliexpressLogo from '../assets/aliexpress_logo.png';
+import shopeeSgLogo from '../assets/shopee_sg.png';
+import shopeeMyLogo from '../assets/shopee_my.png';
+import shopeeThLogo from '../assets/shopee_th.png';
 import { useAuth } from '../context/AuthContext';
 import { startOrder, confirmOrder, completeOrder, activateOrderPlan, type StartOrderResponse } from '../services/customerService';
 import LoadingOverlay from '../components/LoadingOverlay';
@@ -124,9 +124,9 @@ export default function ShoppingCenter() {
 
 
     const shops = [
-        { name: 'Amazon', logo: amazonLogo, rating: 5 },
-        { name: 'eBay', logo: ebayLogo, rating: 4 },
-        { name: 'AliExpress', logo: aliexpressLogo, rating: 4 }
+        { name: 'Shopee Singapore', logo: shopeeSgLogo, rating: 5 },
+        { name: 'Shopee Malaysia', logo: shopeeMyLogo, rating: 5 },
+        { name: 'Shopee Thailand', logo: shopeeThLogo, rating: 5 }
     ];
 
     useEffect(() => {
@@ -220,19 +220,19 @@ export default function ShoppingCenter() {
                                 {shops.map((shop, index) => (
                                     <SwiperSlide key={index}>
                                         <div className="shop-card">
-                                            <div className="shop-content">
-                                                <div className="shop-logo">
-                                                    <img src={shop.logo} alt={shop.name} className="shop-logo-image" />
-                                                </div>
-                                                <div className="shop-details">
+                                            <div className="shop-image-container">
+                                                <img src={shop.logo} alt={shop.name} className="shop-cover-image" />
+                                            </div>
+                                            <div className="shop-info-wrapper">
+                                                <div className="shop-content">
                                                     <div className="shop-name">{shop.name}</div>
                                                     <div className="shop-rating">
                                                         {'⭐'.repeat(shop.rating)}
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div className="progress-line">
-                                                <div className="progress-fill" style={{ width: '60%' }}></div>
+                                                <div className="progress-line">
+                                                    <div className="progress-fill" style={{ width: '60%' }}></div>
+                                                </div>
                                             </div>
                                         </div>
                                     </SwiperSlide>
@@ -601,45 +601,42 @@ export default function ShoppingCenter() {
                 .shop-card {
                     background: var(--color-bg-primary);
                     border: 1px solid var(--color-border-primary);
-                    border-radius: var(--radius-md);
+                    border-radius: var(--radius-lg);
+                    overflow: hidden;
+                    box-shadow: var(--shadow-sm);
+                }
+
+                .shop-image-container {
+                    width: 100%;
+                    height: 220px;
+                    position: relative;
+                }
+
+                .shop-cover-image {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                }
+
+                .shop-info-wrapper {
                     padding: var(--space-lg);
                 }
 
                 .shop-content {
                     display: flex;
                     align-items: center;
-                    gap: var(--space-lg);
-                    margin-bottom: var(--space-md);
-                }
-
-                .shop-logo {
-                    width: 60px;
-                    height: 60px;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    flex-shrink: 0;
-                }
-
-                .shop-logo-image {
-                    width: 100%;
-                    height: 100%;
-                    object-fit: contain;
-                }
-
-                .shop-details {
-                    flex: 1;
+                    justify-content: space-between;
+                    margin-bottom: var(--space-lg);
                 }
 
                 .shop-name {
-                    font-size: var(--font-size-base);
-                    font-weight: 600;
+                    font-size: var(--font-size-lg);
+                    font-weight: 700;
                     color: var(--color-text-primary);
-                    margin-bottom: var(--space-xs);
                 }
 
                 .shop-rating {
-                    font-size: var(--font-size-sm);
+                    font-size: var(--font-size-base);
                 }
 
                 .progress-line {

@@ -4,9 +4,9 @@ import { useNavigate } from 'react-router-dom';
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import { useAuth } from '../context/AuthContext';
-import amazonLogo from '../assets/amazon_logo.png';
-import ebayLogo from '../assets/ebay_logo.png';
-import aliexpressLogo from '../assets/aliexpress_logo.png';
+import shopeeSgLogo from '../assets/shopee_sg.png';
+import shopeeMyLogo from '../assets/shopee_my.png';
+import shopeeThLogo from '../assets/shopee_th.png';
 import flightPreview from '../assets/flight_preview.png';
 import 'swiper/css';
 import 'swiper/css/pagination';
@@ -15,9 +15,9 @@ export default function ProductCard() {
   const navigate = useNavigate();
   const { user, orderPlan, account } = useAuth();
   const shops = [
-    { name: 'Amazon', logo: amazonLogo, rating: 5 },
-    { name: 'eBay', logo: ebayLogo, rating: 4 },
-    { name: 'AliExpress', logo: aliexpressLogo, rating: 4 }
+    { name: 'Shopee Singapore', logo: shopeeSgLogo, rating: 5 },
+    { name: 'Shopee Malaysia', logo: shopeeMyLogo, rating: 5 },
+    { name: 'Shopee Thailand', logo: shopeeThLogo, rating: 5 }
   ];
 
   return (
@@ -73,14 +73,14 @@ export default function ProductCard() {
             {shops.map((shop, index) => (
               <SwiperSlide key={index}>
                 <div className="shop-card">
-                  <div className="shop-header">
-                    <div className="shop-logo">
-                      <img src={shop.logo} alt={shop.name} className="shop-logo-image" />
-                    </div>
-                    <div className="shop-name">{shop.name}</div>
+                  <div className="shop-image-container">
+                    <img src={shop.logo} alt={shop.name} className="shop-cover-image" />
                   </div>
-                  <div className="shop-rating">
-                    {'⭐'.repeat(shop.rating)}
+                  <div className="shop-details">
+                    <div className="shop-name">{shop.name}</div>
+                    <div className="shop-rating">
+                      {'⭐'.repeat(shop.rating)}
+                    </div>
                   </div>
                 </div>
               </SwiperSlide>
@@ -181,10 +181,9 @@ export default function ProductCard() {
         .shop-card {
           background: var(--color-bg-secondary);
           border: 1px solid var(--color-border-primary);
-          border-radius: var(--radius-md);
-          padding: var(--space-xl);
+          border-radius: var(--radius-lg);
           transition: all var(--transition-fast);
-          min-height: 150px;
+          overflow: hidden;
         }
 
         .shop-card:hover {
@@ -192,36 +191,32 @@ export default function ProductCard() {
           box-shadow: var(--shadow-md);
         }
 
-        .shop-header {
-          display: flex;
-          align-items: center;
-          gap: var(--space-md);
-          margin-bottom: var(--space-sm);
+        .shop-image-container {
+          width: 100%;
+          height: 180px;
         }
 
-        .shop-logo {
-          font-size: 32px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          width: 80px;
-          height: 80px;
-        }
-
-        .shop-logo-image {
+        .shop-cover-image {
           width: 100%;
           height: 100%;
-          object-fit: contain;
+          object-fit: cover;
+        }
+
+        .shop-details {
+          padding: var(--space-lg);
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
         }
 
         .shop-name {
-          font-size: var(--font-size-base);
-          font-weight: 600;
+          font-size: var(--font-size-lg);
+          font-weight: 700;
           color: var(--color-text-primary);
         }
 
         .shop-rating {
-          font-size: var(--font-size-sm);
+          font-size: var(--font-size-base);
         }
 
         .starting-btn {

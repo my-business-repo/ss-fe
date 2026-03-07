@@ -12,6 +12,12 @@ export default function DepositUpload() {
   const location = useLocation();
   const { amount, method } = location.state || { amount: '0.00', method: 'trc20' };
 
+  const address = method?.toLowerCase() === 'erc20'
+    ? '0xF0ce77cc1AC59000d95F35A7bf7eCcDe4a59D524'
+    : 'TSnhLofEXPLkJyeuHZyxyzxsSzNaLN5qNB';
+
+  const addressType = method?.toLowerCase() === 'erc20' ? 'ERC20 Address' : 'TRC20 Address';
+
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string>('');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -115,20 +121,20 @@ export default function DepositUpload() {
 
           <div className="bitcoin-info">
             <div className="bitcoin-address-section">
-              <label className="bitcoin-label">Bitcoin Address</label>
+              <label className="bitcoin-label">{addressType}</label>
               <div className="address-container">
                 <input
                   type="text"
                   className="address-input"
-                  value="abcdefghijklmnop"
+                  value={address}
                   readOnly
                 />
                 <button
                   type="button"
                   className="copy-btn"
                   onClick={() => {
-                    navigator.clipboard.writeText('abcdefghijklmnop');
-                    alert('Bitcoin address copied to clipboard!');
+                    navigator.clipboard.writeText(address);
+                    alert(`${addressType} copied to clipboard!`);
                   }}
                 >
                   Copy
@@ -139,13 +145,13 @@ export default function DepositUpload() {
             <div className="qr-code-section">
               <div className="qr-code-container">
                 <QRCodeSVG
-                  value="abcdefghijklmnop"
+                  value={address}
                   size={180}
                   level="H"
                   includeMargin={true}
                 />
               </div>
-              <p className="qr-hint">Scan QR code to get Bitcoin address</p>
+              <p className="qr-hint">Scan QR code to get {addressType}</p>
             </div>
           </div>
         </div>
