@@ -45,11 +45,13 @@ export default function SignUp() {
       return;
     }
 
-    // Basic email regex validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(formData.email)) {
-      setError('Please enter a valid email address');
-      return;
+    // Basic email regex validation (optional)
+    if (formData.email) {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(formData.email)) {
+        setError('Please enter a valid email address');
+        return;
+      }
     }
 
     // Phone number validation (at least 7 digits)
@@ -59,7 +61,7 @@ export default function SignUp() {
       return;
     }
 
-    if (formData.name && formData.email && formData.phone && formData.password && formData.fundPassword) {
+    if (formData.name && formData.phone && formData.password && formData.fundPassword) {
       setIsLoading(true);
       try {
         // Call the signup API
@@ -77,7 +79,7 @@ export default function SignUp() {
         // Auto-login after successful registration
         try {
           const authResponse = await signinCustomer({
-            email: formData.email,
+            phoneNumber: formData.phone,
             password: formData.password,
           });
 
@@ -164,19 +166,6 @@ export default function SignUp() {
               />
             </div>
 
-            {/* Email */}
-            <div className="form-group">
-              <input
-                type="email"
-                name="email"
-                className="form-input"
-                placeholder="Enter your email address"
-                value={formData.email}
-                onChange={handleChange}
-                required
-              />
-            </div>
-
             {/* Phone Number with Country Code */}
             <div className="form-group phone-group">
               <PhoneInput
@@ -188,6 +177,18 @@ export default function SignUp() {
                 buttonClass="phone-input-button"
                 placeholder={t('enterPhone')}
                 enableSearch={true}
+              />
+            </div>
+
+            {/* Email */}
+            <div className="form-group">
+              <input
+                type="email"
+                name="email"
+                className="form-input"
+                placeholder="Enter your email address (optional)"
+                value={formData.email}
+                onChange={handleChange}
               />
             </div>
 

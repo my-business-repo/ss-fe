@@ -2,7 +2,7 @@ import { getApiUrl } from '../config/api';
 
 export interface SignupData {
     name: string;
-    email: string;
+    email?: string;
     password: string;
     fundPassword: string;
     phoneNumber: string;
@@ -12,6 +12,7 @@ export interface SignupData {
 export interface SigninData {
     email?: string;
     username?: string;
+    phoneNumber?: string;
     password: string;
 }
 

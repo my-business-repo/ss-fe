@@ -3,6 +3,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import shopeeLogo from '../assets/shopee_logo_no_bkg.png';
 import flightPreview from '../assets/flight_preview.png';
 import { useLanguage } from '../i18n/LanguageContext';
+import PhoneInput from 'react-phone-input-2';
+import 'react-phone-input-2/lib/style.css';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { signinCustomer, activateOrderPlan, getOrderPlan } from '../services/customerService';
@@ -12,8 +14,10 @@ export default function SignIn() {
   const navigate = useNavigate();
   const { t } = useLanguage();
   const { login } = useAuth();
+  const [loginMethod, setLoginMethod] = useState<'phone' | 'username'>('phone');
   const [formData, setFormData] = useState({
-    emailOrUsername: '',
+    username: '',
+    phone: '',
     password: '',
     remember: false
   });
@@ -25,19 +29,30 @@ export default function SignIn() {
     e.preventDefault();
     setError(null);
 
-    if (formData.emailOrUsername && formData.password) {
+    // Simple validation based on method
+    if (loginMethod === 'phone') {
+      const phoneDigits = formData.phone.replace(/\D/g, '');
+      if (phoneDigits.length < 7) {
+        setError('Phone number must have at least 7 digits');
+        return;
+      }
+    } else {
+      if (!formData.username) {
+        setError('Username is required');
+        return;
+      }
+    }
+
+    if ((loginMethod === 'phone' && formData.phone) || (loginMethod === 'username' && formData.username)) {
+      if (!formData.password) return;
+
       setIsLoading(true);
       try {
-        const isEmail = formData.emailOrUsername.includes('@');
-
         // Call the signin API
         const response = await signinCustomer({
-          ...(isEmail ? { email: formData.emailOrUsername } : { username: formData.emailOrUsername }),
+          ...(loginMethod === 'phone' ? { phoneNumber: formData.phone } : { username: formData.username }),
           password: formData.password,
         });
-
-        console.log('Signin successful:', response);
-
         // Activate order plan automatically
         let orderPlan = null;
         try {
@@ -84,6 +99,10 @@ export default function SignIn() {
     }));
   };
 
+  const handlePhoneChange = (value: string) => {
+    setFormData(prev => ({ ...prev, phone: value }));
+  };
+
   return (
     <div className="auth-container">
       <div className="auth-background"></div>
@@ -95,6 +114,23 @@ export default function SignIn() {
             <h2 className="auth-title">{t('signIn')}</h2>
           </div>
 
+          <div className="login-method-tabs">
+            <button
+              type="button"
+              className={`method-tab ${loginMethod === 'phone' ? 'active' : ''}`}
+              onClick={() => setLoginMethod('phone')}
+            >
+              Phone Number
+            </button>
+            <button
+              type="button"
+              className={`method-tab ${loginMethod === 'username' ? 'active' : ''}`}
+              onClick={() => setLoginMethod('username')}
+            >
+              Username
+            </button>
+          </div>
+
           <form onSubmit={handleSubmit} className="auth-form">
             {/* Error Message */}
             {error && (
@@ -103,19 +139,35 @@ export default function SignIn() {
               </div>
             )}
 
-            <div className="form-group">
-              <label htmlFor="emailOrUsername" className="form-label">Email or Username</label>
-              <input
-                type="text"
-                id="emailOrUsername"
-                name="emailOrUsername"
-                className="form-input"
-                placeholder="Enter your email or username"
-                value={formData.emailOrUsername}
-                onChange={handleChange}
-                required
-              />
-            </div>
+            {loginMethod === 'phone' ? (
+              <div className="form-group phone-group">
+                <label className="form-label">Phone Number</label>
+                <PhoneInput
+                  country={'us'}
+                  value={formData.phone}
+                  onChange={handlePhoneChange}
+                  containerClass="phone-input-container"
+                  inputClass="phone-input-field"
+                  buttonClass="phone-input-button"
+                  placeholder={t('enterPhone')}
+                  enableSearch={true}
+                />
+              </div>
+            ) : (
+              <div className="form-group">
+                <label htmlFor="username" className="form-label">Username</label>
+                <input
+                  type="text"
+                  id="username"
+                  name="username"
+                  className="form-input"
+                  placeholder="Enter your username"
+                  value={formData.username}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+            )}
 
             <div className="form-group relative">
               <label htmlFor="password" className="form-label">{t('password')}</label>
@@ -218,6 +270,31 @@ export default function SignIn() {
           margin-bottom: 0px;
         }
 
+        .login-method-tabs {
+          display: flex;
+          gap: 10px;
+          margin-bottom: 20px;
+          border-bottom: 1px solid var(--color-border-primary);
+        }
+
+        .method-tab {
+          flex: 1;
+          background: none;
+          border: none;
+          padding: 10px 0;
+          font-size: 15px;
+          font-weight: 600;
+          color: var(--color-text-secondary);
+          cursor: pointer;
+          border-bottom: 2px solid transparent;
+          transition: all 0.2s;
+        }
+
+        .method-tab.active {
+          color: var(--color-accent-primary);
+          border-bottom-color: var(--color-accent-primary);
+        }
+
         .auth-form {
           display: flex;
           flex-direction: column;
@@ -266,6 +343,39 @@ export default function SignIn() {
         
         [data-theme='dark'] .form-input:focus {
             background: #333;
+        }
+
+        /* React Phone Input Overrides */
+        .phone-input-container {
+             width: 100% !important;
+        }
+        
+        .phone-input-field {
+            width: 100% !important;
+            height: 48px !important;
+            background: #f5f5f5 !important;
+            border: 1px solid transparent !important;
+            border-radius: 4px !important;
+            padding-left: 58px !important;
+            font-size: 14px !important;
+            color: #333 !important;
+        }
+        
+        [data-theme='dark'] .phone-input-field {
+             background: #2a2a2a !important;
+             color: #fff !important;
+            border: 1px solid transparent !important;
+        }
+
+        .phone-input-button {
+             background: transparent !important;
+             border: none !important;
+             border-right: 1px solid transparent !important;
+             left: 4px !important;
+        }
+        
+        .phone-input-button .selected-flag {
+             background: transparent !important;
         }
 
         .has-icon {
