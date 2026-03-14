@@ -15,6 +15,10 @@ export default function OrderHistory() {
     const [isDepositDialogOpen, setIsDepositDialogOpen] = useState(false);
     const [depositErrorMsg, setDepositErrorMsg] = useState('');
     const [isOverlayLoading, setIsOverlayLoading] = useState(false);
+    const [isTradeableDialogOpen, setIsTradeableDialogOpen] = useState(false);
+
+    const isTradeableError = (msg: string) =>
+        msg.includes('Trading is not enabled') || msg.includes('tradeable');
 
     // Drawer state
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -52,7 +56,9 @@ export default function OrderHistory() {
             setIsDrawerOpen(true);
         } catch (error: any) {
             console.error('Failed to confirm order:', error);
-            if (error.message && error.message.includes('Insufficient balance')) {
+            if (error.message && isTradeableError(error.message)) {
+                setIsTradeableDialogOpen(true);
+            } else if (error.message && error.message.includes('Insufficient balance')) {
                 setDepositErrorMsg(error.message);
                 setIsDepositDialogOpen(true);
             } else {
@@ -75,7 +81,12 @@ export default function OrderHistory() {
             fetchOrders();
         } catch (error: any) {
             console.error('Failed to complete order:', error);
-            alert(error.message || 'Failed to complete order');
+            if (error.message && isTradeableError(error.message)) {
+                setIsTradeableDialogOpen(true);
+                setIsDrawerOpen(false);
+            } else {
+                alert(error.message || 'Failed to complete order');
+            }
         } finally {
             setSubmittingId(null);
             setIsOverlayLoading(false);
@@ -215,6 +226,23 @@ export default function OrderHistory() {
                         autoFocus
                     >
                         Go to Deposit
+                    </Button>
+                </DialogActions>
+            </Dialog>
+
+            <Dialog
+                open={isTradeableDialogOpen}
+                onClose={() => setIsTradeableDialogOpen(false)}
+            >
+                <DialogTitle sx={{ color: 'warning.main', fontWeight: 'bold' }}>Trading Not Enabled</DialogTitle>
+                <DialogContent>
+                    <Typography>
+                        Trading is not enabled for your account. Please contact support.
+                    </Typography>
+                </DialogContent>
+                <DialogActions sx={{ p: 2 }}>
+                    <Button onClick={() => setIsTradeableDialogOpen(false)} color="inherit">
+                        Close
                     </Button>
                 </DialogActions>
             </Dialog>

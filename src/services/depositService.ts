@@ -29,6 +29,9 @@ export interface ErrorResponse {
  */
 export const submitDeposit = async (data: DepositRequest): Promise<DepositResponse> => {
     try {
+        const token = localStorage.getItem('authToken');
+        if (!token) throw new Error('No auth token found');
+
         const formData = new FormData();
         formData.append('accountId', data.accountId.toString());
         formData.append('amount', data.amount.toString());
@@ -39,8 +42,11 @@ export const submitDeposit = async (data: DepositRequest): Promise<DepositRespon
 
         const response = await fetch(getApiUrl('v1/customer/deposit'), {
             method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                // Note: Don't set Content-Type header for FormData, browser will set it automatically with boundary
+            },
             body: formData,
-            // Note: Don't set Content-Type header for FormData, browser will set it automatically with boundary
         });
 
         const responseData = await response.json();

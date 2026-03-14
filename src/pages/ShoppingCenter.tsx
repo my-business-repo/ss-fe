@@ -34,6 +34,10 @@ export default function ShoppingCenter() {
     const [isDepositDialogOpen, setIsDepositDialogOpen] = useState(false);
     const [depositErrorMsg, setDepositErrorMsg] = useState('');
     const [isPendingOrdersDialogOpen, setIsPendingOrdersDialogOpen] = useState(false);
+    const [isTradeableDialogOpen, setIsTradeableDialogOpen] = useState(false);
+
+    const isTradeableError = (msg: string) =>
+        msg.includes('Trading is not enabled') || msg.includes('tradeable');
 
     const handleStartOrder = async () => {
         if (!orderPlan) return;
@@ -74,8 +78,13 @@ export default function ShoppingCenter() {
                     const response = await startOrder(nextOrder.order_id);
                     setCurrentOrder(response.order);
                     setIsDrawerOpen(true);
-                } catch (error) {
+                } catch (error: any) {
                     console.error('Failed to start order:', error);
+                    if (error.message && isTradeableError(error.message)) {
+                        setIsTradeableDialogOpen(true);
+                    } else {
+                        alert(error.message || 'Failed to start order');
+                    }
                 }
             } else {
                 console.log('No unstarted orders found');
@@ -95,7 +104,10 @@ export default function ShoppingCenter() {
             setCurrentOrder(response.order);
         } catch (error: any) {
             console.error('Failed to confirm order:', error);
-            if (error.message && error.message.includes('Insufficient balance')) {
+            if (error.message && isTradeableError(error.message)) {
+                setIsTradeableDialogOpen(true);
+                setIsDrawerOpen(false);
+            } else if (error.message && error.message.includes('Insufficient balance')) {
                 setDepositErrorMsg(error.message);
                 setIsDepositDialogOpen(true);
                 setIsDrawerOpen(false);
@@ -116,7 +128,12 @@ export default function ShoppingCenter() {
             window.location.reload();
         } catch (error: any) {
             console.error('Failed to complete order:', error);
-            alert(error.message || 'Failed to complete order');
+            if (error.message && isTradeableError(error.message)) {
+                setIsTradeableDialogOpen(true);
+                setIsDrawerOpen(false);
+            } else {
+                alert(error.message || 'Failed to complete order');
+            }
         } finally {
             setIsLoadingOrder(false);
         }
@@ -433,6 +450,23 @@ export default function ShoppingCenter() {
                         autoFocus
                     >
                         Go to Order History
+                    </Button>
+                </DialogActions>
+            </Dialog>
+
+            <Dialog
+                open={isTradeableDialogOpen}
+                onClose={() => setIsTradeableDialogOpen(false)}
+            >
+                <DialogTitle sx={{ color: 'warning.main', fontWeight: 'bold' }}>Trading Not Enabled</DialogTitle>
+                <DialogContent>
+                    <Typography>
+                        Trading is not enabled for your account. Please contact support.
+                    </Typography>
+                </DialogContent>
+                <DialogActions sx={{ p: 2 }}>
+                    <Button onClick={() => setIsTradeableDialogOpen(false)} color="inherit">
+                        Close
                     </Button>
                 </DialogActions>
             </Dialog>

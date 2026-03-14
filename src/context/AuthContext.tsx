@@ -128,10 +128,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         setUser(null);
         setAccount(null);
         setOrderPlan(null);
-        localStorage.removeItem('authToken');
-        localStorage.removeItem('customer');
-        localStorage.removeItem('account');
-        localStorage.removeItem('orderPlan');
+        localStorage.clear();
     };
 
     const refreshOrderPlan = async () => {

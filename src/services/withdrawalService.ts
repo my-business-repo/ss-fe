@@ -29,10 +29,14 @@ export interface ErrorResponse {
  */
 export const submitWithdrawal = async (data: WithdrawalRequest): Promise<WithdrawalResponse> => {
     try {
+        const token = localStorage.getItem('authToken');
+        if (!token) throw new Error('No auth token found');
+
         const response = await fetch(getApiUrl('v1/customer/withdrawal'), {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
             },
             body: JSON.stringify(data),
         });

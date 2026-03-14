@@ -6,7 +6,7 @@ import HomeIcon from '@mui/icons-material/Home';
 import SupportAgentIcon from '@mui/icons-material/SupportAgent';
 import { useLanguage } from '../i18n/LanguageContext';
 import { submitWithdrawal } from '../services/withdrawalService';
-import { getCustomerInfo } from '../services/customerService';
+import { verifyToken } from '../services/customerService';
 import { getWithdrawalAddresses, type WithdrawalAddress as WithdrawalAddressType } from '../services/withdrawalAddressService';
 
 export default function Withdraw() {
@@ -27,28 +27,22 @@ export default function Withdraw() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const customerData = localStorage.getItem('customer');
-        if (!customerData) {
+        const authToken = localStorage.getItem('authToken');
+        if (!authToken) {
           setError('Please sign in to continue');
           setIsLoadingBalance(false);
           return;
         }
 
-        const customer = JSON.parse(customerData);
-
-        // Parallel fetching
-        const [customers, addresses] = await Promise.all([
-          getCustomerInfo(),
+        // Parallel fetching — use verifyToken for correct account resolution
+        const [{ account }, addresses] = await Promise.all([
+          verifyToken(authToken),
           getWithdrawalAddresses()
         ]);
 
         // Process balance
-        const currentCustomer = customers.find(c => c.email === customer.email || c.id === customer.id);
-        if (currentCustomer && currentCustomer.accounts && currentCustomer.accounts.length > 0) {
-          const activeAccount = currentCustomer.accounts.find(acc => acc.status === 'active');
-          if (activeAccount) {
-            setAvailableBalance(activeAccount.balance);
-          }
+        if (account) {
+          setAvailableBalance(account.balance);
         }
 
         // Process addresses
@@ -81,30 +75,16 @@ export default function Withdraw() {
     setIsSubmitting(true);
 
     try {
-      // Get customer info from localStorage to verify authentication
-      const customerData = localStorage.getItem('customer');
-      if (!customerData) {
+      // Get auth token from localStorage
+      const authToken = localStorage.getItem('authToken');
+      if (!authToken) {
         setError('Please sign in to continue');
         setIsSubmitting(false);
         return;
       }
 
-      const customer = JSON.parse(customerData);
-
-      // Fetch latest customer info including accounts from API
-      const customers = await getCustomerInfo();
-
-      // Find the current customer by email or ID
-      const currentCustomer = customers.find(c => c.email === customer.email || c.id === customer.id);
-
-      if (!currentCustomer || !currentCustomer.accounts || currentCustomer.accounts.length === 0) {
-        setError('Account information not found. Please contact support.');
-        setIsSubmitting(false);
-        return;
-      }
-
-      // Get the first active account
-      const activeAccount = currentCustomer.accounts.find(acc => acc.status === 'active');
+      // Use verifyToken to get the current user's own account via their auth token
+      const { account: activeAccount } = await verifyToken(authToken);
 
       if (!activeAccount) {
         setError('No active account found. Please contact support.');

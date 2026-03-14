@@ -5,7 +5,7 @@ import DescriptionIcon from '@mui/icons-material/Description';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { QRCodeSVG } from 'qrcode.react';
 import { submitDeposit } from '../services/depositService';
-import { getCustomerInfo } from '../services/customerService';
+import { verifyToken } from '../services/customerService';
 
 export default function DepositUpload() {
   const navigate = useNavigate();
@@ -48,30 +48,16 @@ export default function DepositUpload() {
     setError('');
 
     try {
-      // Get customer info from localStorage to verify authentication
-      const customerData = localStorage.getItem('customer');
-      if (!customerData) {
+      // Get auth token from localStorage
+      const authToken = localStorage.getItem('authToken');
+      if (!authToken) {
         setError('Please sign in to continue');
         setIsSubmitting(false);
         return;
       }
 
-      const customer = JSON.parse(customerData);
-
-      // Fetch latest customer info including accounts from API
-      const customers = await getCustomerInfo();
-
-      // Find the current customer by email or ID
-      const currentCustomer = customers.find(c => c.email === customer.email || c.id === customer.id);
-
-      if (!currentCustomer || !currentCustomer.accounts || currentCustomer.accounts.length === 0) {
-        setError('Account information not found. Please contact support.');
-        setIsSubmitting(false);
-        return;
-      }
-
-      // Get the first active account
-      const activeAccount = currentCustomer.accounts.find(acc => acc.status === 'active');
+      // Use verifyToken to get the current user's own account via their auth token
+      const { account: activeAccount } = await verifyToken(authToken);
 
       if (!activeAccount) {
         setError('No active account found. Please contact support.');
